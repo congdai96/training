@@ -20,6 +20,11 @@
                     </a>
                     <li class="light-blue dropdown-modal">
                         <a href='<c:url value="/login?action=logout"/>'>
+                           	 役職別集計
+                        </a>
+                    </li>
+                    <li class="light-blue dropdown-modal">
+                        <a href='<c:url value="/login?action=logout"/>'>
                             <i class="ace-icon fa fa-power-off"></i>
                            	 ログアウト 
                         </a>

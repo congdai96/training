@@ -12,6 +12,23 @@
 	</head>
 
 	<body>
+		<div>
+		<form class="form-inline" action="${pageContext.request.contextPath}/UserController?tion=SEARCH" method = "GET">
+		    <label >姓:</label>
+		    <input type="text" class="form-control" placeholder="Enter family name" name="familyName">
+		    <label >名:</label>
+		    <input type="text" class="form-control" placeholder="Enter first name" name="firstName"><br>
+		    <div class="form-group">
+			  <label for="author">役職:</label>
+			  <select class="form-control" name = "authorityId">
+			  </select>
+			</div>
+			<input type="hidden" name="action" value="SEARCH" />
+			<button type="submit" class="btn btn-primary">リスト</button>
+		    <button type="submit" class="btn btn-primary">検索</button>
+		    
+  		</form>
+		</div>
 		<div class="main-content">
 		<form action="<c:url value='/admin-new'/>" id="formSubmit" method="get">
 					<div class="page-content">
