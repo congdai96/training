@@ -29,15 +29,15 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
-        if (url.startsWith("/traning/admin")) {
-//            UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
+        if (url.startsWith("/training/admin")) {
             MstUserModel model = (MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
             if (model != null) {
                 if (model.getAdmin()==1) {
                     filterChain.doFilter(servletRequest, servletResponse); 
-                } else if (model.getAdmin()==0) {
-                    response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=not_permission&alert=danger");
-                }
+                } 
+//                else if (model.getAdmin()==0) {
+////                    response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=not_permission&alert=danger");
+////                }
             } else {
                 response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=not_login&alert=danger");
             }
