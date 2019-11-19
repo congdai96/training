@@ -43,7 +43,7 @@ public class UserController extends HttpServlet {
 		String view = "";
 		if (mstModel.getType().equals(SystemConstant.LIST)) {
 			mstModel.setListResult(mstUserService.findAll());
-			view = "/views/admin/new/list.jsp";
+			view = "/views/admin/user/list.jsp";
 			
 		} else if (mstModel.getType().equals(SystemConstant.EDIT)) {
 			if (mstModel.getUserId() != null) {
