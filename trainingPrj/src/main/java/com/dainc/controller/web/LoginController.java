@@ -16,8 +16,8 @@ import com.dainc.service.IMstUserService;
 import com.dainc.utils.FormUtil;
 import com.dainc.utils.SessionUtil;
 
-@WebServlet(urlPatterns = {"/trang-chu","/dang-nhap","/thoat"})
-public class HomeController extends HttpServlet {
+@WebServlet(urlPatterns = {"/login"})
+public class LoginController extends HttpServlet {
 	
 	
 	
@@ -39,13 +39,11 @@ public class HomeController extends HttpServlet {
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("/views/login.jsp");
 			rd.forward(request, response);
-		} else if (action != null && action.equals("logout")) {
+		} 
+		else if (action != null && action.equals("logout")) {
 			SessionUtil.getInstance().removeValue(request, "USERMODEL");
-			response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login");
-		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/views/web/home.jsp");
-			rd.forward(request, response);
-		}
+			response.sendRedirect(request.getContextPath()+"/login?action=login");
+		} 
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,13 +53,10 @@ public class HomeController extends HttpServlet {
 			mstModel = mstUserService.findByUserNameAndPassword(mstModel.getUserId(), mstModel.getPassword());
 			if (mstModel != null) {
 				SessionUtil.getInstance().putValue(request, "USERMODEL", mstModel);
-				if (mstModel.getAdmin()==0) {
-					response.sendRedirect(request.getContextPath()+"/trang-chu");
-				} else if (mstModel.getAdmin()==1) {
-					response.sendRedirect(request.getContextPath()+"/admin-new?type=list");
-				}
-			} else {
-				response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=username_password_invalid&alert=danger");
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+			} 
+			else {
+				response.sendRedirect(request.getContextPath()+"/login?action=login&message=username_password_invalid&alert=danger");
 			}
 		}
 	}

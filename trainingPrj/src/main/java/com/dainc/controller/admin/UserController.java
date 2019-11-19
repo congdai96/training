@@ -22,7 +22,7 @@ import com.dainc.service.impl.MstUserService;
 import com.dainc.utils.FormUtil;
 import com.dainc.utils.MessageUtil;
 
-@WebServlet(urlPatterns = {"/admin-new"})
+@WebServlet(urlPatterns = {"/admin-user"})
 public class UserController extends HttpServlet {
 	
 	private static final long serialVersionUID = 2686801510274002166L;

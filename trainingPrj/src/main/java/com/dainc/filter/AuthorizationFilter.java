@@ -32,14 +32,10 @@ public class AuthorizationFilter implements Filter {
         if (url.startsWith("/training/admin")) {
             MstUserModel model = (MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
             if (model != null) {
-                if (model.getAdmin()==1) {
-                    filterChain.doFilter(servletRequest, servletResponse); 
-                } 
-//                else if (model.getAdmin()==0) {
-////                    response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=not_permission&alert=danger");
-////                }
+            	filterChain.doFilter(servletRequest, servletResponse); 
+
             } else {
-                response.sendRedirect(request.getContextPath()+"/dang-nhap?action=login&message=not_login&alert=danger");
+                response.sendRedirect(request.getContextPath()+"/login?action=login&message=not_login&alert=danger");
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Đăng nhập</title>
+<title>ログイン</title>
 </head>
 <body>
 	<div class="container">
@@ -26,7 +26,7 @@
 							${message}
 					</div>
 				</c:if>
-				<form action="<c:url value='/dang-nhap'/>" id="formLogin" method="post">
+				<form action="<c:url value='/login'/>" id="formLogin" method="post">
 					<div class="form-group">
 						<input type="text" class="form-control" id="userId" name="userId"
 							placeholder="ユーザーID">

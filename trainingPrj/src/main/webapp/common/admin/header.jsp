@@ -19,7 +19,7 @@
                                                ようこそ, ${USERMODEL.firstName}さん
                     </a>
                     <li class="light-blue dropdown-modal">
-                        <a href='<c:url value="/thoat?action=logout"/>'>
+                        <a href='<c:url value="/login?action=logout"/>'>
                             <i class="ace-icon fa fa-power-off"></i>
                            	 ログアウト 
                         </a>
