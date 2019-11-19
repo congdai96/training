@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
-	<display-name>new jdbc 12 month 2018</display-name>
+	<display-name>trainingservletjdbc</display-name>
 	
 	<listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
