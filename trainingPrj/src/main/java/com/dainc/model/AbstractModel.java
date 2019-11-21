@@ -10,7 +10,6 @@ public class AbstractModel<T> {
 	private Timestamp modifiedDate;
 	private String createdBy;
 	private String modifiedBy;
-	private long[] ids;
 	private List<T> listResult = new ArrayList<>();
 	private String alert;
 	private String message;
@@ -39,12 +38,6 @@ public class AbstractModel<T> {
 	}
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
-	}
-	public long[] getIds() {
-		return ids;
-	}
-	public void setIds(long[] ids) {
-		this.ids = ids;
 	}
 	public List<T> getListResult() {
 		return listResult;

@@ -9,4 +9,8 @@ public interface IMstUserService {
 	List<MstUserModel> findAll();
 	MstUserModel findOne(String userId);
 	int getTotalItem();
+	int update(MstUserModel mstUserModel);
+	void delete(String userId);
+	int save(MstUserModel mstUserModel);
+	List<MstUserModel> search(MstUserModel mstUserModel);
 }

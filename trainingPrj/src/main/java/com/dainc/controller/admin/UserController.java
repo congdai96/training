@@ -1,7 +1,7 @@
 package com.dainc.controller.admin;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -12,15 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dainc.constant.SystemConstant;
-import com.dainc.model.MstGenderModel;
-import com.dainc.model.MstRoleModel;
 import com.dainc.model.MstUserModel;
 import com.dainc.service.IMstGenderService;
 import com.dainc.service.IMstRoleService;
 import com.dainc.service.IMstUserService;
-import com.dainc.service.impl.MstUserService;
 import com.dainc.utils.FormUtil;
 import com.dainc.utils.MessageUtil;
+import com.dainc.utils.SessionUtil;
 
 @WebServlet(urlPatterns = {"/admin-user"})
 public class UserController extends HttpServlet {
@@ -36,31 +34,111 @@ public class UserController extends HttpServlet {
 	@Inject
 	private IMstGenderService mstGenderService;
 	
-	
+	ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
+		
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
 		String view = "";
 		if (mstModel.getType().equals(SystemConstant.LIST)) {
 			mstModel.setListResult(mstUserService.findAll());
+			request.setAttribute("roles", mstRoleService.findAll());
 			view = "/views/admin/user/list.jsp";
 			
-		} else if (mstModel.getType().equals(SystemConstant.EDIT)) {
-			if (mstModel.getUserId() != null) {
-				mstModel = mstUserService.findOne(mstModel.getUserId());
+		} 
+		
+		else if (mstModel.getType().equals(SystemConstant.EDIT)) {
+			String alert = request.getParameter("alert");
+			String message = request.getParameter("message");
+			if (message != null && alert != null) {
+				request.setAttribute("message", resourceBundle.getString(message));
+				request.setAttribute("alert", alert);
+			}
+			try {
+				String userId = request.getParameter("id");
+				mstModel = mstUserService.findOne(userId);
+				request.setAttribute("roles", mstRoleService.findAll());
+				request.setAttribute("genders", mstGenderService.findAll());
+				view = "/views/admin/user/edit.jsp";
+				request.setAttribute(SystemConstant.MODEL, mstModel);
+				RequestDispatcher rd = request.getRequestDispatcher(view);
+				rd.forward(request, response);
+				return;
+				
+			} catch (Exception e) {
+				System.out.print(e.getMessage());
+			}
+			mstModel = mstUserService.findOne(mstModel.getUserId());
+			request.setAttribute("roles", mstRoleService.findAll());
+			request.setAttribute("genders", mstGenderService.findAll());
+			view = "/views/admin/user/edit.jsp";
+			
+		}
+		
+		else if (mstModel.getType().equals(SystemConstant.ADD)) {
+			String alert = request.getParameter("alert");
+			String message = request.getParameter("message");
+			if (message != null && alert != null) {
+				request.setAttribute("message", resourceBundle.getString(message));
+				request.setAttribute("alert", alert);
 			}
 			request.setAttribute("roles", mstRoleService.findAll());
 			request.setAttribute("genders", mstGenderService.findAll());
-//			view = "/views/admin/new/edit.jsp";
-			view = "/views/admin/home.jsp";
+			view = "/views/admin/user/add.jsp";
 		}
-		MessageUtil.showMessage(request);
+		
+		else if (mstModel.getType().equals(SystemConstant.DELETE)) {
+			mstUserService.delete(mstModel.getUserId());
+			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+			return;
+		}
+
+//		MessageUtil.showMessage(request);
 		request.setAttribute(SystemConstant.MODEL, mstModel);
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
+		String action = request.getParameter("action");
+		if (action != null && action.equals("edit")) {
+			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
+			int i = mstUserService.update(mstModel);
+			if (i==1) {
+			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+			}
+			else if(i == 6) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=userid_non&alert=danger");
+			else if(i == 2) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=familyname_non&alert=danger");
+			else if(i == 3) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=firstname_non&alert=danger");
+			else if(i == 4) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=pass_non&alert=danger");
+			else if(i == 5) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=userid_haved&alert=danger");
+
+		}
+		
+		else if (action != null && action.equals("add")) {
+			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
+			int i = mstUserService.save(mstModel);
+			if(i == 1) {
+			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+			}
+			else if(i == 6) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_non&alert=danger");
+			else if(i == 2) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=familyname_non&alert=danger");
+			else if(i == 3) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=firstname_non&alert=danger");
+			else if(i == 4) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=pass_non&alert=danger");
+			else if(i == 5) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_haved&alert=danger");
+		}
+		
+		else if (action != null && action.equals("search")) {
+			mstModel.setListResult(mstUserService.search(mstModel));
+			String view = "";
+			view = "/views/admin/user/list.jsp";
+			request.setAttribute(SystemConstant.MODEL, mstModel);
+			request.setAttribute("roles", mstRoleService.findAll());
+			RequestDispatcher rd = request.getRequestDispatcher(view);
+			rd.forward(request, response);
+		}
 		
 	}
 }
