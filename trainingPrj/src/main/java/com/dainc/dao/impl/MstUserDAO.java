@@ -40,20 +40,22 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 
 	@Override
 	public void update(MstUserModel updateUserModel) {
-		String authorityId = null,genderId = null;
+		String authorityId = null,genderId = null,age=null;
 		if (updateUserModel.getAuthorityId()!=0) {
 			 authorityId = Integer.toString(updateUserModel.getAuthorityId());
 			}
 		if (updateUserModel.getGenderId()!=0) {
 			 genderId = Integer.toString(updateUserModel.getGenderId());
 			}
+		if (updateUserModel.getAge()!=0) {
+			 age = Integer.toString(updateUserModel.getAge());
+			}
 		StringBuilder sql = new StringBuilder("UPDATE mst_user SET password = ?, family_name = ?,");
-				sql.append(" gender_id = "+ genderId +", authority_id = "+ authorityId +", first_name = ?, age = ?, admin = ?,");
-				sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");				
-				update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
-				updateUserModel.getAge(),
-				updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), 
-				updateUserModel.getModifiedBy(), updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
+		sql.append(" gender_id = "+ genderId +", authority_id = "+ authorityId +", first_name = ?, age = "+ age +", admin = ?,");
+		sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");				
+		update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
+		updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), updateUserModel.getModifiedBy(), 
+		updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
 	}
 
 	@Override
@@ -65,18 +67,21 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 
 	@Override
 	public void save(MstUserModel saveUserModel) {
-		String authorityId = null,genderId = null;
+		String authorityId = null,genderId = null,age =null;
 		if (saveUserModel.getAuthorityId()!=0) {
 			 authorityId = Integer.toString(saveUserModel.getAuthorityId());
 			}
 		if (saveUserModel.getGenderId()!=0) {
 			 genderId = Integer.toString(saveUserModel.getGenderId());
 			}
+		if (saveUserModel.getAge()!=0) {
+			 age = Integer.toString(saveUserModel.getAge());
+			}
 		StringBuilder sql = new StringBuilder("INSERT INTO mst_user (user_id, password, family_name, first_name,");
-		sql.append(" age, admin, create_user_id, update_user_id, create_date, update_date,authority_id, gender_id)");
-		sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+ authorityId +","+ genderId +")");
+		sql.append(" admin, create_user_id, update_user_id, create_date, update_date, age, authority_id, gender_id)");
+		sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, "+ age +","+ authorityId +","+ genderId +")");
 		update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
-		saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
+		saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
 		saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate());
 	}
 

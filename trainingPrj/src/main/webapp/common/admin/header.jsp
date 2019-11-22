@@ -19,7 +19,7 @@
                                                ようこそ, ${USERMODEL.firstName}さん
                     </a>
                     <li class="light-blue dropdown-modal">
-                        <a href='<c:url value="/login?action=logout"/>'>
+                        <a href='<c:url value="/admin-shuukei"/>'>
                            	 役職別集計
                         </a>
                     </li>

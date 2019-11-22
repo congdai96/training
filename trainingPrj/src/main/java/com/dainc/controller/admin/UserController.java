@@ -1,6 +1,7 @@
 package com.dainc.controller.admin;
 
 import java.io.IOException;
+
 import java.util.ResourceBundle;
 
 import javax.inject.Inject;
@@ -85,7 +86,6 @@ public class UserController extends HttpServlet {
 			return;
 		}
 
-//		MessageUtil.showMessage(request);
 		request.setAttribute(SystemConstant.MODEL, mstModel);
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
@@ -98,7 +98,7 @@ public class UserController extends HttpServlet {
 		if (action != null && action.equals("edit")) {
 			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
 			if (mstUserService.update(mstModel)) {
-			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
 			}
 			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");
 		}
@@ -106,7 +106,7 @@ public class UserController extends HttpServlet {
 		else if (action != null && action.equals("add")) {
 			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
 			if(mstUserService.save(mstModel)) {
-			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
 			}
 			else response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_haved&alert=danger");
 		}
