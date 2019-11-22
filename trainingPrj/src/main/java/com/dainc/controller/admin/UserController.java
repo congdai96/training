@@ -41,6 +41,12 @@ public class UserController extends HttpServlet {
 		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
 		String view = "";
 		if (mstModel.getType().equals(SystemConstant.LIST)) {
+			String alert1 = request.getParameter("alert");
+			String message1 = request.getParameter("message");
+			if (message1 != null && alert1 != null) {
+				request.setAttribute("message", resourceBundle.getString(message1));
+				request.setAttribute("alert", alert1);
+				}
 			mstModel.setListResult(mstUserService.findAll());
 			request.setAttribute("roles", mstRoleService.findAll());
 			view = "/views/admin/user/list.jsp";
@@ -53,20 +59,6 @@ public class UserController extends HttpServlet {
 			if (message != null && alert != null) {
 				request.setAttribute("message", resourceBundle.getString(message));
 				request.setAttribute("alert", alert);
-			}
-			try {
-				String userId = request.getParameter("id");
-				mstModel = mstUserService.findOne(userId);
-				request.setAttribute("roles", mstRoleService.findAll());
-				request.setAttribute("genders", mstGenderService.findAll());
-				view = "/views/admin/user/edit.jsp";
-				request.setAttribute(SystemConstant.MODEL, mstModel);
-				RequestDispatcher rd = request.getRequestDispatcher(view);
-				rd.forward(request, response);
-				return;
-				
-			} catch (Exception e) {
-				System.out.print(e.getMessage());
 			}
 			mstModel = mstUserService.findOne(mstModel.getUserId());
 			request.setAttribute("roles", mstRoleService.findAll());
@@ -105,29 +97,18 @@ public class UserController extends HttpServlet {
 		String action = request.getParameter("action");
 		if (action != null && action.equals("edit")) {
 			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
-			int i = mstUserService.update(mstModel);
-			if (i==1) {
+			if (mstUserService.update(mstModel)) {
 			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
 			}
-			else if(i == 6) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=userid_non&alert=danger");
-			else if(i == 2) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=familyname_non&alert=danger");
-			else if(i == 3) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=firstname_non&alert=danger");
-			else if(i == 4) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=pass_non&alert=danger");
-			else if(i == 5) response.sendRedirect(request.getContextPath()+"/admin-user?type=edit&id="+mstModel.getUserId()+"&message=userid_haved&alert=danger");
-
+			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");
 		}
 		
 		else if (action != null && action.equals("add")) {
 			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
-			int i = mstUserService.save(mstModel);
-			if(i == 1) {
+			if(mstUserService.save(mstModel)) {
 			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
 			}
-			else if(i == 6) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_non&alert=danger");
-			else if(i == 2) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=familyname_non&alert=danger");
-			else if(i == 3) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=firstname_non&alert=danger");
-			else if(i == 4) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=pass_non&alert=danger");
-			else if(i == 5) response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_haved&alert=danger");
+			else response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_haved&alert=danger");
 		}
 		
 		else if (action != null && action.equals("search")) {

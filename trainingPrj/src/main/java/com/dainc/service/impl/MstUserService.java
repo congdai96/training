@@ -23,11 +23,7 @@ public class MstUserService implements IMstUserService {
 	
 	@Inject
 	private IMstGenderDAO mstGenderDAO;
-//	private IUserDAO userDAO;
-//
-//	public UserService() {
-//		userDAO = new UserDAO();
-//	}
+
 	
 	@Override
 	public MstUserModel findByUserNameAndPassword(String userName, String password) {
@@ -55,17 +51,16 @@ public class MstUserService implements IMstUserService {
 	}
 
 	@Override
-	public int update(MstUserModel mstUserModel) {
-		if(mstUserModel.getUserId()=="") return 6;
-		else if(mstUserModel.getFamilyName()=="") return 2;
-		else if(mstUserModel.getFirstName()=="") return 3;
-		else if(mstUserModel.getPassword()=="") return 4;
+	public boolean update(MstUserModel mstUserModel) {
+		if(checkValidate(mstUserModel)) {
 		MstUserModel oldUserModel = mstUserDAO.findOne(mstUserModel.getUserId());
 		mstUserModel.setCreatedDate(oldUserModel.getCreatedDate());
 		mstUserModel.setCreatedBy(oldUserModel.getCreatedBy());
 		mstUserModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 		mstUserDAO.update(mstUserModel);
-		return 1;
+		return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -74,26 +69,32 @@ public class MstUserService implements IMstUserService {
 	}
 
 	@Override
-	public int save(MstUserModel mstUserModel) {
-		if(mstUserModel.getUserId()=="") return 6;
-		else if(mstUserModel.getFamilyName()=="") return 2;
-		else if(mstUserModel.getFirstName()=="") return 3;
-		else if(mstUserModel.getPassword()=="") return 4;
+	public boolean save(MstUserModel mstUserModel) {
 		MstUserModel oldUserModel = mstUserDAO.findOne(mstUserModel.getUserId());
-		if(oldUserModel == null) {
+		if(oldUserModel == null && checkValidate(mstUserModel)) {
 			mstUserModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 			mstUserModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 			mstUserModel.setModifiedBy(mstUserModel.getCreatedBy());
 			mstUserDAO.save(mstUserModel);
-			return 1;
+			return true;
 		}
-		return 5;
+		return false;
 		
 	}
 
 	@Override
 	public List<MstUserModel> search(MstUserModel mstUserModel) {
 		return mstUserDAO.search(mstUserModel);
+	}
+
+	@Override
+	public boolean checkValidate(MstUserModel mstUserModel) {
+		if ( mstUserModel.getUserId()==null || 
+			mstUserModel.getFamilyName()== null || 
+			mstUserModel.getFirstName()==null || 
+			mstUserModel.getPassword()==null)
+		return false;
+		return true;
 	}
 	
 }

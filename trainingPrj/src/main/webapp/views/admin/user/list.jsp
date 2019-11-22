@@ -9,10 +9,16 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>training</title>
+		<script src="https://raw.githubusercontent.com/makeusabrew/bootbox/gh-pages/bootbox.js"></script>
 	</head>
 
 	<body>
 		<div>
+						<c:if test="${not empty message}">
+							<div class="alert alert-${alert}">
+									${message}
+							</div>
+						</c:if>
 		<form id="formsearchSubmit" class="form-inline" style="margin-left:50px" action="<c:url value='/admin-user'/>" method = "post">
 			<br>
 		    <label >姓:</label>
@@ -106,7 +112,16 @@
 		</form>
 		</div>
 		<!-- /.main-content -->
-		<script>			
+		<script>
+
+
+		    $("#btnDelete").on("click", ".remove", function(e) {
+		        bootbox.confirm("Are you sure you want to delete?", function(result) {
+		            if(result){
+		              console.log('write code of remove item.');
+		            }
+		        }); 
+		    });
 
 		</script>
 	</body>

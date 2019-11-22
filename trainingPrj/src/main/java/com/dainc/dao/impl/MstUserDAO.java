@@ -40,39 +40,20 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 
 	@Override
 	public void update(MstUserModel updateUserModel) {
+		String authorityId = null,genderId = null;
+		if (updateUserModel.getAuthorityId()!=0) {
+			 authorityId = Integer.toString(updateUserModel.getAuthorityId());
+			}
+		if (updateUserModel.getGenderId()!=0) {
+			 genderId = Integer.toString(updateUserModel.getGenderId());
+			}
 		StringBuilder sql = new StringBuilder("UPDATE mst_user SET password = ?, family_name = ?,");
-		if (updateUserModel.getAuthorityId()==0 && updateUserModel.getGenderId()==0) {
-				sql.append(" gender_id = null, authority_id = null, first_name = ?, age = ?, admin = ?,");
+				sql.append(" gender_id = "+ genderId +", authority_id = "+ authorityId +", first_name = ?, age = ?, admin = ?,");
 				sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");				
 				update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
 				updateUserModel.getAge(),
 				updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), 
 				updateUserModel.getModifiedBy(), updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
-				}
-		else if (updateUserModel.getAuthorityId()==0 && updateUserModel.getGenderId()!=0) {
-				sql.append("authority_id = null, first_name = ?, gender_id = ?, age = ?,  admin = ?,");
-				sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");			
-				update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
-				updateUserModel.getGenderId(), updateUserModel.getAge(), 
-				updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), 
-				updateUserModel.getModifiedBy(), updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
-				}
-		else if (updateUserModel.getAuthorityId()!=0 && updateUserModel.getGenderId()==0) {
-				sql.append("gender_id = null, first_name = ?, age = ?, authority_id = ?, admin = ?,");
-				sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");
-				update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
-				updateUserModel.getAge(), updateUserModel.getAuthorityId(), 
-				updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), 
-				updateUserModel.getModifiedBy(), updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
-				}
-		else	{
-				sql.append(" first_name = ?, gender_id = ?, age = ?, authority_id = ?, admin = ?,");
-				sql.append(" create_user_id = ?, update_user_id = ?, create_date = ?, update_date = ? WHERE user_id = ?");
-				update(sql.toString(), updateUserModel.getPassword(), updateUserModel.getFamilyName(), updateUserModel.getFirstName(),
-				updateUserModel.getGenderId(), updateUserModel.getAge(), updateUserModel.getAuthorityId(), 
-				updateUserModel.getAdmin(), updateUserModel.getCreatedBy(), 
-				updateUserModel.getModifiedBy(), updateUserModel.getCreatedDate(),updateUserModel.getModifiedDate(),updateUserModel.getUserId());
-		}
 	}
 
 	@Override
@@ -84,41 +65,21 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 
 	@Override
 	public void save(MstUserModel saveUserModel) {
+		String authorityId = null,genderId = null;
+		if (saveUserModel.getAuthorityId()!=0) {
+			 authorityId = Integer.toString(saveUserModel.getAuthorityId());
+			}
+		if (saveUserModel.getGenderId()!=0) {
+			 genderId = Integer.toString(saveUserModel.getGenderId());
+			}
 		StringBuilder sql = new StringBuilder("INSERT INTO mst_user (user_id, password, family_name, first_name,");
-		sql.append(" age, admin, create_user_id, update_user_id, create_date, update_date");
-		if (saveUserModel.getAuthorityId()==0 && saveUserModel.getGenderId()==0) {
-			sql.append(")");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
-					saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
-					saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate());
-		}
-		else if (saveUserModel.getAuthorityId()==0 && saveUserModel.getGenderId()!=0) {
-			sql.append(",gender_id)");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
-					saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
-					saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate(),
-					saveUserModel.getGenderId());
-		}
-		else if (saveUserModel.getAuthorityId()!=0 && saveUserModel.getGenderId()==0) {
-			sql.append(",authority_id)");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
-					saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
-					saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate(),
-					saveUserModel.getAuthorityId());
-		}
-		else {
-			sql.append(",authority_id, gender_id)");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
-					saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
-					saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate(),
-					saveUserModel.getAuthorityId(),saveUserModel.getGenderId());
-		}
-		
+		sql.append(" age, admin, create_user_id, update_user_id, create_date, update_date,authority_id, gender_id)");
+		sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+ authorityId +","+ genderId +")");
+		update(sql.toString(), saveUserModel.getUserId(),saveUserModel.getPassword(), saveUserModel.getFamilyName(), saveUserModel.getFirstName(),
+		saveUserModel.getAge(),saveUserModel.getAdmin(), saveUserModel.getCreatedBy(), 
+		saveUserModel.getModifiedBy(), saveUserModel.getCreatedDate(),saveUserModel.getModifiedDate());
 	}
+
 
 	@Override
 	public List<MstUserModel> search(MstUserModel mstUserModel) {

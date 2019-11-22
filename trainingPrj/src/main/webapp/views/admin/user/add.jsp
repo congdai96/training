@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">ユーザID：</label>
                                 <div class="col-sm-9">
-                                <input type="text" class="form-control" id="userId" name="userId"/>													
+                                <input type="text" class="form-control" id="userId" name="userId" required/>													
                                 </div>
                             </div>
                             <br/>
@@ -59,14 +59,14 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">年齢：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="age" name="age"/>
+                                    <input type="text" class="form-control" id="age" name="age" digits/>
                                 </div>                             
                             <br/>
                             <br/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">名：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="firstName" name="firstName" />
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required/>
                                 </div>
                             </div>
                             <br/>
@@ -74,7 +74,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">姓：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="familyName" name="familyName" />
+                                    <input type="text" class="form-control" id="familyName" name="familyName" required/>
                                 </div>
                             </div>
                             <br/>
@@ -82,7 +82,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">パスワード：</label>
                                 <div class="col-sm-9">                                 
-                                    <textarea rows="" cols="" id="password" name="password" ></textarea>
+                                    <textarea rows="" cols="" id="password" name="password" required></textarea>
                                 </div>
                             </div>
                             <br/>
@@ -109,9 +109,62 @@
     </div>
 </div>
 <script>	
-	$(":checkbox").change(function(){
-	     $(this).val($(this).is(":checked") ? 1 : 0);
-	});
+		$(":checkbox").change(function(){
+		     $(this).val($(this).is(":checked") ? 1 : 0);
+		});
+	
+	   $(document).ready(function() {
+		   
+	        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+	        $("#formSubmit").validate({
+	            rules: {
+	            	userId: {
+                        required: true,
+                        maxlength: 8
+                    },
+	            	firstName: {
+                        required: true,
+                        maxlength: 10
+                    },
+
+	            	familyName: {
+                        required: true,
+                        maxlength: 10
+                    },
+	            	password: {
+                        required: true,
+                        maxlength: 8
+                    },
+                    age:{
+                    	digits:true
+                    }
+	
+	            },
+	            messages: {
+	            	userId: {
+                        required: "\u30E6\u30FC\u30B6ID\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                        maxlength: "max8"
+                    },
+	            	firstName: {
+                        required: "\u540D\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                        maxlength: "max10"
+                    },
+
+	            	familyName: {
+                        required: "\u6027\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                        maxlength: "max10"
+                    },
+	            	password: {
+                        required: "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                        maxlength: "max8"
+                    },
+                    age:{
+                    	digits:"int"
+                    }
+	
+	            }
+	        });
+	    });
 	
 </script>
 </body>

@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">年齢：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="age" name="age" value="${model.age}"/>
+                                    <input type="text" class="form-control" id="age" name="age" value="${model.age}" digit/>
                                 </div>
                             </div>
                             <br/>
@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">名：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="firstName" name="firstName" value="${model.firstName}"/>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="${model.firstName}" required/>
                                 </div>
                             </div>
                             <br/>
@@ -89,7 +89,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">姓：</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="familyName" name="familyName" value="${model.familyName}"/>
+                                    <input type="text" class="form-control" id="familyName" name="familyName" value="${model.familyName}" required/>
                                 </div>
                             </div>
                             <br/>
@@ -97,7 +97,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">パスワード：</label>
                                 <div class="col-sm-9">                                 
-                                    <textarea rows="" cols="" id="password" name="password" >${model.password}</textarea>
+                                    <textarea rows="" cols="" id="password" name="password" required>${model.password}</textarea>
                                 </div>
                             </div>
                             <br/>
@@ -132,51 +132,58 @@
 	     $(this).val($(this).is(":checked") ? 1 : 0);
 	});
 	
-    $('#btnAddOrUpdateNew').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        var formData = $('#formSubmit').serializeArray();
-        $.each(formData, function (i, v) {
-            data[""+v.name+""] = v.value;
-        });
-        data["content"] = editor.getData();
-        var id = $('#id').val();
-        if (id == "") {
-            addNew(data);
-        } else {
-            updateNew(data);
-        }
-    });
-    function addNew(data) {
-        $.ajax({
-            url: '${APIurl}',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-            	window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=insert_success";
-            },
-            error: function (error) {
-            	window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
-            }
-        });
-    }
-    function updateNew(data) {
-        $.ajax({
-            url: '${APIurl}',
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-            	window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=update_success";
-            },
-            error: function (error) {
-            	window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
-            }
-        });
-    }
+	   $(document).ready(function() {
+		   
+	        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+	        $("#formSubmit").validate({
+	            rules: {
+	            	userId: {
+                       required: true,
+                       maxlength: 8
+                   },
+	            	firstName: {
+                       required: true,
+                       maxlength: 10
+                   },
+
+	            	familyName: {
+                       required: true,
+                       maxlength: 10
+                   },
+	            	password: {
+                       required: true,
+                       maxlength: 8
+                   },
+                   age:{
+                   	digits:true
+                   }
+	
+	            },
+	            messages: {
+	            	userId: {
+                       required: "\u30E6\u30FC\u30B6ID\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                       maxlength: "max8"
+                   },
+	            	firstName: {
+                       required: "\u540D\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                       maxlength: "max10"
+                   },
+
+	            	familyName: {
+                       required: "\u6027\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                       maxlength: "max10"
+                   },
+	            	password: {
+                       required: "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+                       maxlength: "max8"
+                   },
+                   age:{
+                   	digits:"int"
+                   }
+	
+	            }
+	        });
+	    });
 </script>
 </body>
 </html>
