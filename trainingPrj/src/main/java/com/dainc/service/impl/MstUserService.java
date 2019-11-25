@@ -89,10 +89,10 @@ public class MstUserService implements IMstUserService {
 
 	@Override
 	public boolean checkValidate(MstUserModel mstUserModel) {
-		if ( mstUserModel.getUserId()==null || 
-			mstUserModel.getFamilyName()== null || 
-			mstUserModel.getFirstName()==null || 
-			mstUserModel.getPassword()==null)
+		if ( mstUserModel.getUserId()== "" || 
+			mstUserModel.getFamilyName()== "" || 
+			mstUserModel.getFirstName()== "" || 
+			mstUserModel.getPassword()== "")
 		return false;
 		return true;
 	}

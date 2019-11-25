@@ -8,7 +8,7 @@
             <a href="#" class="navbar-brand">
                 <big>
                     <i class="fa fa-leaf"></i>
-                                                一覧
+                                               
                 </big>
             </a>
         </div>

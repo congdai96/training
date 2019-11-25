@@ -42,12 +42,6 @@ public class UserController extends HttpServlet {
 		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
 		String view = "";
 		if (mstModel.getType().equals(SystemConstant.LIST)) {
-			String alert1 = request.getParameter("alert");
-			String message1 = request.getParameter("message");
-			if (message1 != null && alert1 != null) {
-				request.setAttribute("message", resourceBundle.getString(message1));
-				request.setAttribute("alert", alert1);
-				}
 			mstModel.setListResult(mstUserService.findAll());
 			request.setAttribute("roles", mstRoleService.findAll());
 			view = "/views/admin/user/list.jsp";

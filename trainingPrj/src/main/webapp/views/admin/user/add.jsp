@@ -14,6 +14,7 @@
 									${message}
 							</div>
 						</c:if>
+						<h1>登録</h1>
                         <form id="formSubmit" name="formSubmit" form action="<c:url value='/admin-user'/>" method="post" onsubmit="return validateForm()">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">役職：</label>
@@ -63,6 +64,7 @@
                                 </div>                             
                             <br/>
                             <br/>
+                            <br/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">名：</label>
                                 <div class="col-sm-9">
@@ -82,7 +84,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">パスワード：</label>
                                 <div class="col-sm-9">                                 
-                                    <textarea rows="" cols="" id="password" name="password" required></textarea>
+                                    <input type="text" class="form-control" id="password" name="password" required/>
                                 </div>
                             </div>
                             <br/>
@@ -100,7 +102,7 @@
                             <input type="hidden" value="${model.userId}" id="userId" name="userId"/>
                             <input type="hidden" value="add" name="action"/>
 							<button type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'">戻る</button>
-							<button type="submit" class="btn btn-primary" >登録</button>				                            
+							<button id="btnAdd" type="button" class="btn btn-primary" >登録</button>				                            
                         </form>
 
                 </div>
@@ -112,59 +114,65 @@
 		$(":checkbox").change(function(){
 		     $(this).val($(this).is(":checked") ? 1 : 0);
 		});
+		
+		$('#btnAdd').on('click', function() {
+			document.getElementById("btnAdd").type = "button";
+			if(confirm('登録してよろしいですか？')) 
+				document.getElementById("btnAdd").type = "submit";
+		});
 	
-	   $(document).ready(function() {
-		   
-	        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
-	        $("#formSubmit").validate({
-	            rules: {
-	            	userId: {
-                        required: true,
-                        maxlength: 8
-                    },
-	            	firstName: {
-                        required: true,
-                        maxlength: 10
-                    },
-
-	            	familyName: {
-                        required: true,
-                        maxlength: 10
-                    },
-	            	password: {
-                        required: true,
-                        maxlength: 8
-                    },
-                    age:{
-                    	digits:true
-                    }
+		$(document).ready(function() {
+			   
+		        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+		        $("#formSubmit").validate({
+		            rules: {
+		            	userId: {
+	                        required: true,
+	                        maxlength: 8
+	                    },
+		            	firstName: {
+	                        required: true,
+	                        maxlength: 10
+	                    },
 	
-	            },
-	            messages: {
-	            	userId: {
-                        required: "\u30E6\u30FC\u30B6ID\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
-                        maxlength: "max8"
-                    },
-	            	firstName: {
-                        required: "\u540D\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
-                        maxlength: "max10"
-                    },
-
-	            	familyName: {
-                        required: "\u6027\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
-                        maxlength: "max10"
-                    },
-	            	password: {
-                        required: "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
-                        maxlength: "max8"
-                    },
-                    age:{
-                    	digits:"int"
-                    }
+		            	familyName: {
+	                        required: true,
+	                        maxlength: 10
+	                    },
+		            	password: {
+	                        required: true,
+	                        maxlength: 8
+	                    },
+	                    age:{
+	                    	digits:true
+	                    }
+		
+		            },
+		            messages: {
+		            	userId: {
+	                        required: "\u30E6\u30FC\u30B6ID\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+	                        maxlength: "max8"
+	                    },
+		            	firstName: {
+	                        required: "\u540D\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+	                        maxlength: "max10"
+	                    },
 	
-	            }
-	        });
-	    });
+		            	familyName: {
+	                        required: "\u6027\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+	                        maxlength: "max10"
+	                    },
+		            	password: {
+	                        required: "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5165\u529B\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002",
+	                        maxlength: "max8"
+	                    },
+	                    age:{
+	                    	digits:"int"
+	                    }
+		
+		            }
+		        });
+		 });
 	
 </script>
 </body>

@@ -14,6 +14,7 @@
 									${message}
 							</div>
 						</c:if>
+						<h1>更新</h1>
                         <form id="formSubmit" name="formSubmit" form action="<c:url value='/admin-user'/>" method="post" onsubmit="return validateForm()">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">役職：</label>
@@ -97,7 +98,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">パスワード：</label>
                                 <div class="col-sm-9">                                 
-                                    <textarea rows="" cols="" id="password" name="password" required>${model.password}</textarea>
+                                    <input type="text" class="form-control" id="password" name="password" value="${model.password}" required/>
                                 </div>
                             </div>
                             <br/>
@@ -118,9 +119,9 @@
                             <input type="hidden" value="${model.userId}" id="userId" name="userId"/>
                             <input type="hidden" value="edit" name="action"/>
 							<button type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'">戻る</button>
-							<button type="submit" class="btn btn-primary" >更新</button>					                            
+							<button id="btnEdit" type="button" class="btn btn-primary" >更新</button>
                         </form>
-                </div>
+                </div>x
             </div>
         </div>
     </div>
@@ -132,6 +133,12 @@
 	     $(this).val($(this).is(":checked") ? 1 : 0);
 	});
 	
+	$('#btnEdit').on('click', function() {
+		document.getElementById("btnEdit").type = "button";
+		if(confirm('更新してよろしいですか？')) 
+			document.getElementById("btnEdit").type = "submit";
+		});
+
 	   $(document).ready(function() {
 		   
 	        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
