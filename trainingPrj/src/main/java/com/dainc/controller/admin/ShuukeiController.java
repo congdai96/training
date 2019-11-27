@@ -24,7 +24,7 @@ public class ShuukeiController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ShuukeiModel shuukeiModel = new ShuukeiModel();
-		shuukeiModel.setListResult(shuukeiService.roleShuukei());
+		shuukeiModel.setListResult(shuukeiService.roleShuukei());	//集計のデータを取る
 		request.setAttribute("shuukeiModel", shuukeiModel);
 		String view = "/views/admin/shuukei.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(view);

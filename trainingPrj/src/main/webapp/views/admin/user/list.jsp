@@ -117,7 +117,6 @@
 		<!-- /.main-content -->
 		<script>
 
-
 		function GetSelectedValue(){
 			var e = document.getElementById("authorityId");
 			var authorityId = e.options[e.selectedIndex].value;

@@ -11,8 +11,6 @@ public class AbstractModel<T> {
 	private String createdBy;
 	private String modifiedBy;
 	private List<T> listResult = new ArrayList<>();
-	private String alert;
-	private String message;
 	private String type;
 	
 	public Timestamp getCreatedDate() {
@@ -45,23 +43,6 @@ public class AbstractModel<T> {
 	public void setListResult(List<T> listResult) {
 		this.listResult = listResult;
 	}
-
-	public String getAlert() {
-		return alert;
-	}
-
-	public void setAlert(String alert) {
-		this.alert = alert;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	public String getType() {
 		return type;
 	}

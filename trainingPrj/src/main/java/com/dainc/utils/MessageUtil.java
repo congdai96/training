@@ -9,20 +9,26 @@ public class MessageUtil {
 			String messageResponse = "";
 			String alert = "";
 			String message = request.getParameter("message");
-			if (message.equals("insert_success")) {
-				messageResponse = "Insert success";
+			if (message.equals("userid_haved")) {
+				messageResponse = "ユーザーIDがありました。";
+				alert = "danger";
+			} else if (message.equals("false")) {
+				messageResponse = "失敗しました。";
+				alert = "danger";
+			} else if (message.equals("not_haved")) {
+				messageResponse = "結果がありません。";
+				alert = "danger";
+			} else if (message.equals("add_success")) {
+				messageResponse = "登録できました。";
 				alert = "success";
-			} else if (message.equals("update_success")) {
-				messageResponse = "Update success";
+			} else if (message.equals("edit_success")) {
+				messageResponse = "更新できました。";
 				alert = "success";
 			} else if (message.equals("delete_success")) {
-				messageResponse = "Delete success";
+				messageResponse = "削除できました。";
 				alert = "success";
-			} else if (message.equals("error_system")) {
-				messageResponse = "Error system";
-				alert = "danger";
-			}
-			request.setAttribute("messageResponse", messageResponse);
+			} 
+			request.setAttribute("message", messageResponse);
 			request.setAttribute("alert", alert);
 		}
 	}

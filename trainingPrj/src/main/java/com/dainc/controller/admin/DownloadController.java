@@ -56,7 +56,7 @@ public class DownloadController extends HttpServlet {
 	    inputStream.close();
 	    outStream.close();
 	}
-	else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=not_haved&alert=danger");
+	else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=not_haved&alert=danger");	//ダウンロードできない
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
