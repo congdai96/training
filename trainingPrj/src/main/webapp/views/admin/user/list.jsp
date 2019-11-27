@@ -33,11 +33,13 @@
 			  	<option value=""></option>
 			  	<c:forEach var="item" items="${roles}">
                   <option value="${item.authorityId}" >${item.authorityName}</option>
+              
                 </c:forEach>
 			  </select>
 			</div>
+
 			<input type="hidden" value="search" name="action"/>
-			<button type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'" style="margin-left:200px;width: 135px">リスト</button>
+			<button type="button" class="btn btn-primary" onclick="GetSelectedValue()" style="margin-left:200px;width: 135px">リスト</button>
 		    <button type="submit" class="btn btn-primary" style="width: 135px">検索</button>
 		    
   		</form>
@@ -116,13 +118,12 @@
 		<script>
 
 
-		    $("#btnDelete").on("click", ".remove", function(e) {
-		        bootbox.confirm("Are you sure you want to delete?", function(result) {
-		            if(result){
-		              console.log('write code of remove item.');
-		            }
-		        }); 
-		    });
+		function GetSelectedValue(){
+			var e = document.getElementById("authorityId");
+			var authorityId = e.options[e.selectedIndex].value;
+			
+			window.location.href = "/training/admin-download?familyName=&firstName=&authorityId="+authorityId;
+		}
 
 		</script>
 	</body>

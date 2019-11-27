@@ -2,7 +2,6 @@ package com.dainc.dao;
 
 import java.util.List;
 
-import com.dainc.model.MstRoleModel;
 import com.dainc.model.ShuukeiModel;
 
 public interface IShuukeiDAO extends GenericDAO<ShuukeiModel> {

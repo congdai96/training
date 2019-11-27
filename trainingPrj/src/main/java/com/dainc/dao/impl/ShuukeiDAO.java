@@ -2,12 +2,8 @@ package com.dainc.dao.impl;
 
 import java.util.List;
 
-import com.dainc.dao.IMstRoleDAO;
 import com.dainc.dao.IShuukeiDAO;
-import com.dainc.mapper.MstRoleMapper;
-import com.dainc.mapper.MstUserMapper;
 import com.dainc.mapper.ShuukeiMapper;
-import com.dainc.model.MstRoleModel;
 import com.dainc.model.ShuukeiModel;
 
 public class ShuukeiDAO extends AbstractDAO<ShuukeiModel> implements IShuukeiDAO {

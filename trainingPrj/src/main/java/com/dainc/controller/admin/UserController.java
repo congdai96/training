@@ -1,7 +1,7 @@
 package com.dainc.controller.admin;
 
 import java.io.IOException;
-
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.inject.Inject;
@@ -18,7 +18,6 @@ import com.dainc.service.IMstGenderService;
 import com.dainc.service.IMstRoleService;
 import com.dainc.service.IMstUserService;
 import com.dainc.utils.FormUtil;
-import com.dainc.utils.MessageUtil;
 import com.dainc.utils.SessionUtil;
 
 @WebServlet(urlPatterns = {"/admin-user"})
@@ -42,6 +41,12 @@ public class UserController extends HttpServlet {
 		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
 		String view = "";
 		if (mstModel.getType().equals(SystemConstant.LIST)) {
+			String alert = request.getParameter("alert");
+			String message = request.getParameter("message");
+			if (message != null && alert != null) {
+				request.setAttribute("message", resourceBundle.getString(message));
+				request.setAttribute("alert", alert);
+			}
 			mstModel.setListResult(mstUserService.findAll());
 			request.setAttribute("roles", mstRoleService.findAll());
 			view = "/views/admin/user/list.jsp";
@@ -79,7 +84,7 @@ public class UserController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
 			return;
 		}
-
+		
 		request.setAttribute(SystemConstant.MODEL, mstModel);
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
@@ -106,13 +111,17 @@ public class UserController extends HttpServlet {
 		}
 		
 		else if (action != null && action.equals("search")) {
-			mstModel.setListResult(mstUserService.search(mstModel));
-			String view = "";
-			view = "/views/admin/user/list.jsp";
-			request.setAttribute(SystemConstant.MODEL, mstModel);
-			request.setAttribute("roles", mstRoleService.findAll());
-			RequestDispatcher rd = request.getRequestDispatcher(view);
-			rd.forward(request, response);
+			List<MstUserModel> result = mstUserService.search(mstModel);
+			if (result !=null) {
+				mstModel.setListResult(result);
+				String view = "";
+				view = "/views/admin/user/list.jsp";
+				request.setAttribute(SystemConstant.MODEL, mstModel);
+				request.setAttribute("roles", mstRoleService.findAll());
+				RequestDispatcher rd = request.getRequestDispatcher(view);
+				rd.forward(request, response);
+			}
+			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=not_haved&alert=danger");
 		}
 		
 	}
