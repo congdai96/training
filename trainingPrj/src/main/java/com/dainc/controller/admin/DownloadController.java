@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -30,6 +31,8 @@ public class DownloadController extends HttpServlet {
   
   @Inject
   private IMstUserService mstUserService;
+  
+  ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");
 
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +40,7 @@ public class DownloadController extends HttpServlet {
 	List<MstUserModel> result = mstUserService.search(mstModel);
 	if(result!=null) {
 		ReportUtil.exec(mstUserService.search(mstModel));	//帳票を作る
-	    String fullPath = "E:/git/repository/trainingPrj/userreport.pdf";  // ファイルのリンク
+	    String fullPath = resourceBundle.getString("file_pdf");  // ファイルのリンク
 	    Path path = Paths.get(fullPath);
 	    byte[] data = Files.readAllBytes(path);
 	    response.setContentType("application/octet-stream");	    // クライアントにるファイル設定

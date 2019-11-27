@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.dainc.model.MstUserModel;
 
@@ -25,19 +26,12 @@ import jp.co.nobworks.openfunxion4.core.Text;
 
 public class ReportUtil {
 	
-
-    /**
-	 * 
-	 */
-
-	final private static String XML_FILE = "E:/git/repository/trainingPrj/userreport.xml";	//サーバーのxml ファイルのリンク
-    final private static String PDF_FILE = "E:/git/repository/trainingPrj/userreport.pdf";	//サーバーのPDFファイルのリンク
-
+    static ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");	//サーバーのxmlとPDF ファイルのリンク
     
     public static void exec(List<MstUserModel> dataList) {
-        OpenFunXion ofx = new OpenFunXion( XML_FILE );                        // 帳票情報XMLファイルの読み込み
+        OpenFunXion ofx = new OpenFunXion( resourceBundle.getString("file_xml") );                        // 帳票情報XMLファイルの読み込み
         try {                                                   
-            ofx.open( PDF_FILE );                                                           // 出力PDFファイルのオープン
+            ofx.open( resourceBundle.getString("file_pdf") );                                                           // 出力PDFファイルのオープン
         } catch ( IOException e ) {
             e.printStackTrace();   
             return;
@@ -47,40 +41,15 @@ public class ReportUtil {
         }
         makePdf( ofx, dataList );                                                                        // PDFファイルへの出力処理
     }
-    
-    /*
-      * Servlet で PDFファイルを生成せず、Response に直接返す場合の例
-      */
-//    protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException, ServletException {
-//        MstUserDAO mstUserDAO = new MstUserDAO();
-//        ReportUtil.exec(mstUserDAO.findAll());
-////        OpenFunXion ofx = new OpenFunXion( XML_FILE );
-////        try {
-////            ofx.setDebug( true );                                                        // デバッグモードの指定
-////            ofx.open( PDF_FILE );                                                           // 出力PDFファイルのオープン
-////        } catch ( IOException e ) {
-////            e.printStackTrace();   
-////            return;
-////        } catch ( OpenFunXionException e ) {
-////            e.printStackTrace();   
-////            return;
-////        }
-////        makePdf( ofx, dataList );
-//    }
-    
-    
+   
     public static  void makePdf( OpenFunXion ofx, List<MstUserModel> dataList) {
         
-        // 処理モデルから一覧データのコレクションを取得
-    	// 大量データの場合、このように一度にもってこれません。あくまでもサンプルです。
-//        List dataList = userModel.getListResult();
     	MstUserModel userModel = dataList.get(0);
         int pageTotal = (dataList.size()+15)/16;
         // レイアウトの固定部を出力
         printOutline( ofx,userModel.getMstRoleModel().getAuthorityName() );
         
         // Y方向の移動量を決める
-        // １行１２ドットでデザインしたので、６行分移動
         int moveY = 40;
         
         int pageNo = 1;
