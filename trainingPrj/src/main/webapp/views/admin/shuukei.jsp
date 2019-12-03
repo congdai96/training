@@ -8,7 +8,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>training</title>
+		<title>役職別集計</title>
 		<script src="https://raw.githubusercontent.com/makeusabrew/bootbox/gh-pages/bootbox.js"></script>
 	</head>
 
@@ -24,8 +24,14 @@
   										${messageResponse}
 									</div>
 								</c:if>
-								<h1>役職別集計</h1>
-								<button type="button" style="margin-left: 1200px;" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'">一覧</button>
+								<div class="row">
+								<label  class="col-md-10 col-form-label text-md-right"><h1 >役職別集計</h1></label>
+								<div class="col-md-1">
+								<button style="margin-top: 17px;border-radius: 12px;" type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'">一覧</button>
+								</div>
+								</div>
+								
+								<div>
 								<br><br><br>
 								<div class="row">
 									<div class="col-xs-12">

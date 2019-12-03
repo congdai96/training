@@ -3,67 +3,91 @@ package com.dainc.utils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.inject.Inject;
+
+import com.dainc.model.MstRoleModel;
 import com.dainc.model.MstUserModel;
 
 import jp.co.nobworks.openfunxion4.core.BlockLayout;
-import jp.co.nobworks.openfunxion4.core.Box;
 import jp.co.nobworks.openfunxion4.core.Line;
 import jp.co.nobworks.openfunxion4.core.OpenFunXion;
 import jp.co.nobworks.openfunxion4.core.OpenFunXionException;
 import jp.co.nobworks.openfunxion4.core.Text;
-/*
- * ƒo[ƒR[ƒhƒtƒHƒ“ƒg‚Í http://itext.sourceforge.net/downloads/barcodefonts.zip ‚æ‚èæ“¾<BR>
- * ƒTƒ“ƒvƒ‹ƒvƒƒOƒ‰ƒ€‚ÍƒfƒoƒbƒOƒ‚[ƒh‚ğ‚n‚m‚É‚µ‚Ä‚¢‚Ü‚·BiƒfƒUƒCƒ“ƒc[ƒ‹‚Ìİ’è‚Åw’èj
- * ƒfƒoƒbƒOƒ‚[ƒh‚É‚·‚é‚±‚Æ‚ÅAƒc[ƒ‹ã‚Å‚ÌŠm”F‚Æ“¯—l‚Ì“®ì‚ğ‚µ‚Ü‚·B<BR>
- * iŠm”F—pì‹Æƒtƒ@ƒCƒ‹‚Ìg—pAŠm”F—pƒRƒ}ƒ“ƒh‚ÌÀsj
- */
+
 
 
 public class ReportUtil {
-	
-    static ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");	//ƒT[ƒo[‚Ìxml‚ÆPDF ƒtƒ@ƒCƒ‹‚ÌƒŠƒ“ƒN
-    
-    public static void exec(List<MstUserModel> dataList) {
-        OpenFunXion ofx = new OpenFunXion( resourceBundle.getString("file_xml") );                        // ’ •[î•ñXMLƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
-        try {                                                   
-            ofx.open( resourceBundle.getString("file_pdf") );                                                           // o—ÍPDFƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“
-        } catch ( IOException e ) {
-            e.printStackTrace();   
-            return;
-        } catch ( OpenFunXionException e ) {
-            e.printStackTrace();   
-            return;
-        }
-        makePdf( ofx, dataList );                                                                        // PDFƒtƒ@ƒCƒ‹‚Ö‚Ìo—Íˆ—
-    }
-   
+
+	@Inject
+
+
+    static ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");	//XMLãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒªãƒ³ã‚¯
+
+
+    public static void exec(List<MstUserModel> dataList,List<MstRoleModel> roleList) {
+		OpenFunXion ofx = new OpenFunXion(resourceBundle.getString("file_xml"));
+		try {
+			ofx.open(resourceBundle.getString("file_pdf"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		} catch (OpenFunXionException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		List<MstUserModel> noRoleList = new ArrayList<MstUserModel>();
+		for (Iterator i = roleList.iterator(); i.hasNext();) {	//å¸³ç¥¨ã—ãŸã„ãƒ‡ãƒ¼ã‚¿ã‚’å½¹è·ã«ã‚ˆã£ã¦åˆ†å‰²ã™ã‚‹
+			noRoleList.clear();
+			MstRoleModel roleModel = (MstRoleModel) i.next();
+			List<MstUserModel> reportList = new ArrayList<MstUserModel>();
+			for (Iterator j = dataList.iterator(); j.hasNext();) {
+				MstUserModel dataModel = (MstUserModel) j.next();
+				if (roleModel.getAuthorityId() == dataModel.getAuthorityId()) {
+					reportList.add(dataModel);
+				} else if (dataModel.getAuthorityId()==0) {
+					noRoleList.add(dataModel);
+				}
+			}
+			if(reportList.size()!=0) {
+				makePdf(ofx, reportList);
+			}
+		}
+		if(noRoleList.size()!=0) {
+			makePdf(ofx, noRoleList);
+		}
+		ofx.out();
+	}
+
     public static  void makePdf( OpenFunXion ofx, List<MstUserModel> dataList) {
-        
+    	ofx.newPage();
     	MstUserModel userModel = dataList.get(0);
         int pageTotal = (dataList.size()+15)/16;
-        // ƒŒƒCƒAƒEƒg‚ÌŒÅ’è•”‚ğo—Í
-        printOutline( ofx,userModel.getMstRoleModel().getAuthorityName() );
-        
-        // Y•ûŒü‚ÌˆÚ“®—Ê‚ğŒˆ‚ß‚é
+        if(userModel.getAuthorityId()==0) {
+        	printOutline( ofx,"ã¾ã ç™»éŒ²ã—ã¦ã„ãªã„");
+        } else {
+        	printOutline( ofx,userModel.getMstRoleModel().getAuthorityName());
+        }
+
+
         int moveY = 40;
-        
+
         int pageNo = 1;
-//        // ƒy[ƒW•”‚ğæ“¾
         Text page = ofx.getText( "text_13" );
-//        // ‰Šúƒy[ƒW”‚Ìİ’è
         page.setMessage( "PAGE: " + pageNo +"/"+ pageTotal );
-//        // ƒy[ƒW•”‚Ìo—Í
         page.print();
-        
-        // ‰üƒy[ƒW—p‚ÌƒJƒEƒ“ƒ^
+
+
         int count = 0;
-        
-        // ƒfƒUƒCƒ“ƒc[ƒ‹‚Åì¬‚µ‚½Šeˆê——€–Ú‚Ìæ“¾
+
+        BlockLayout dataBlock = ofx.getBlockLayout( "data_block" );
+        dataBlock.resetPosition();
         Line rowLine = ofx.getLine( "row_line" );
         Text userId = ofx.getText( "row_user" );
         Text name = ofx.getText( "row_name" );
@@ -71,43 +95,33 @@ public class ReportUtil {
         Text age = ofx.getText( "row_age" );
         Text no = ofx.getText("row_no");
 
-        // ã‹L‚Í ‚»‚ê‚¼‚ê‚ÌŒ^‚É‚ ‚í‚¹‚½ƒƒ\ƒbƒh‚Åæ“¾‚µ‚Ä‚¢‚Ü‚·‚ª
-        // ‚±‚ê‚ÍƒLƒƒƒXƒg‚µ‚Äæ“¾‚·‚é—á
-        Box reverseRow = (Box)ofx.getPrintObject( "reverse_row" );
-        
-        BlockLayout dataBlock = ofx.getBlockLayout( "data_block" );
+
         for ( Iterator it=dataList.iterator();it.hasNext(); ) {
             MstUserModel model = (MstUserModel)it.next();
-            
+
             if ( count > 0 && count % 16 == 0 ) {
-                // ‰üƒy[ƒW
                 ofx.newPage();
-                // ‰üƒy[ƒW‚µ‚½‚Ì‚ÅAˆÊ’u‚ğŒ³‚É–ß‚·
- 
-                // BlockLayout ‚Åw’è‚·‚é‚ÆŠÈ’P
                 dataBlock.resetPosition();
-                
-                // V‚µ‚¢ƒy[ƒW‚ÌŒÅ’è•”‚ğo—Í
                 printOutline( ofx,userModel.getMstRoleModel().getAuthorityName() );
                 pageNo++;
                 page.setMessage( "PAGE: " + pageNo +"/"+ pageTotal );
                 page.print();
             }
-            
+
             no.setMessage(String.valueOf(count+1));
             no.print();
             no.moveY( moveY );
-            
+
             userId.setMessage( model.getUserId() );
             userId.print();
             userId.moveY( moveY );
-            
+
             name.setMessage( model.getFirstName()+" "+model.getFamilyName() );
             name.print();
             name.moveY( moveY );
-            
 
-  
+
+
             if(model.getMstGenderModel().getGenderName()!=null) {
             	sex.setMessage(String.valueOf(model.getMstGenderModel().getGenderName()));}
             else {
@@ -115,7 +129,7 @@ public class ReportUtil {
             }
             sex.print();
             sex.moveY( moveY );
-            
+
             if(model.getAge()!=0) {
             	age.setMessage(String.valueOf(model.getAge()));}
             else {
@@ -123,18 +137,14 @@ public class ReportUtil {
             }
             age.print();
             age.moveY( moveY );
-                        
+
             rowLine.print();
             rowLine.moveY( moveY );
-            
+
             count++;
         }
-        // I—¹ˆ—
-        ofx.out();
     }
-    /**
-     * ŠOŠÏ•”•ª‚Ìo—Í
-     */
+
     public static void printOutline( OpenFunXion ofx, String roleName ) {
         ofx.print( "body_block" );
         ofx.print( "title_1" );
@@ -153,7 +163,7 @@ public class ReportUtil {
         role.setMessage(roleName);
         role.print();
     }
-    
-    
+
+
 
 }

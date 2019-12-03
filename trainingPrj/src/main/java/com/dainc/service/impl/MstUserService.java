@@ -1,7 +1,9 @@
 package com.dainc.service.impl;
 
 import java.sql.Timestamp;
+
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -70,7 +72,7 @@ public class MstUserService implements IMstUserService {
 
 	@Override
 	public boolean save(MstUserModel mstUserModel) {
-		MstUserModel oldUserModel = mstUserDAO.findOne(mstUserModel.getUserId());
+		MstUserModel oldUserModel = mstUserDAO.findOne(mstUserModel.getUserId());	//ユーザーIDはあったかどうか検査
 		if(oldUserModel == null && checkValidate(mstUserModel)) {
 			mstUserModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 			mstUserModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
@@ -89,10 +91,17 @@ public class MstUserService implements IMstUserService {
 
 	@Override
 	public boolean checkValidate(MstUserModel mstUserModel) {
-		if ( mstUserModel.getUserId()== "" || 
-			mstUserModel.getFamilyName()== "" || 
-			mstUserModel.getFirstName()== "" || 
-			mstUserModel.getPassword()== "")
+        String pHiragana = "[\\u3041-\\u3096\\u309D-\\u309F]|\\uD82C\\uDC01|\\uD83C\\uDE00";
+        String pKatakana = "[\\u30A1-\\u30FA\\u30FD-\\u30FF\\u31F0-\\u31FF\\u32D0-\\u32FE\\u3300-\\u3357\\uFF66-\\uFF6F\\uFF71-\\uFF9D]|\\uD82C\\uDC00";
+        String pHan = "[\\u2E80-\\u2E99\\u2E9B-\\u2EF3\\u2F00-\\u2FD5\\u3005\\u3007\\u3021-\\u3029\\u3038-\\u303B\\u3400-\\u4DB5\\u4E00-\\u9FD5\\uF900-\\uFA6D\\uFA70-\\uFAD9]|[\\uD840-\\uD868\\uD86A-\\uD86C\\uD86F-\\uD872][\\uDC00-\\uDFFF]|\\uD869[\\uDC00-\\uDED6\\uDF00-\\uDFFF]|\\uD86D[\\uDC00-\\uDF34\\uDF40-\\uDFFF]|\\uD86E[\\uDC00-\\uDC1D\\uDC20-\\uDFFF]|\\uD873[\\uDC00-\\uDEA1]|\\uD87E[\\uDC00-\\uDE1D]";
+        String NAME_PATTERN = "^(([a-zA-Z0-9]|" + pHiragana + "|" + pKatakana + "|" + pHan + "){1,10})$";
+        String USERPASS_PATTERN = "^([a-zA-Z0-9]{1,8})$";
+		if (mstUserModel.getAdmin()<0 || mstUserModel.getAdmin()>1 ||
+			Pattern.matches(USERPASS_PATTERN, mstUserModel.getUserId())==false ||
+			Pattern.matches(NAME_PATTERN, mstUserModel.getFamilyName())==false ||
+			Pattern.matches(NAME_PATTERN, mstUserModel.getFirstName())==false ||
+			Pattern.matches(USERPASS_PATTERN, mstUserModel.getPassword())==false
+			)
 		return false;
 		return true;
 	}

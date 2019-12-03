@@ -15,22 +15,22 @@ import com.dainc.service.IShuukeiService;
 
 @WebServlet(urlPatterns = {"/admin-shuukei"})
 public class ShuukeiController extends HttpServlet {
-	
+
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private IShuukeiService shuukeiService;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ShuukeiModel shuukeiModel = new ShuukeiModel();
-		shuukeiModel.setListResult(shuukeiService.roleShuukei());	//WŒv‚Ìƒf[ƒ^‚ğæ‚é
+		shuukeiModel.setListResult(shuukeiService.roleShuukei());	//é›†è¨ˆãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚‹
 		request.setAttribute("shuukeiModel", shuukeiModel);
 		String view = "/views/admin/shuukei.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
-		
-		
+
+
 	}
 
 }

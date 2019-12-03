@@ -5,12 +5,6 @@
 <div id="navbar" class="navbar navbar-default          ace-save-state">
     <div class="navbar-container ace-save-state" id="navbar-container">
         <div class="navbar-header pull-left">
-            <a href="#" class="navbar-brand">
-                <big>
-                    <i class="fa fa-leaf"></i>
-                                               
-                </big>
-            </a>
         </div>
         <div class="navbar-buttons navbar-header pull-right collapse navbar-collapse" role="navigation">
             <ul class="nav ace-nav">

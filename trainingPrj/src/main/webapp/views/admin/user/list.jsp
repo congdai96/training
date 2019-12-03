@@ -8,7 +8,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>training</title>
+		<title>一覧</title>
 		<script src="https://raw.githubusercontent.com/makeusabrew/bootbox/gh-pages/bootbox.js"></script>
 	</head>
 
@@ -19,28 +19,30 @@
 									${message}
 							</div>
 						</c:if>
-						<h1>一覧</h1>
-		<form id="formsearchSubmit" class="form-inline" style="margin-left:50px" action="<c:url value='/admin-user'/>" method = "post">
+						<h1 style="margin-left:20px;">一覧</h1>
+		<form id="formsearchSubmit" class="form-inline" style="margin-left:50px" method = "post">
 			<br>
 		    <label >姓:</label>
-		    <input type="text" class="form-control" name="familyName" id="familyName">
+		    <input style="margin-left:100px;" type="text" class="form-control" name="familyName" id="familyName" value="${model.familyName}">
 		    <label style="margin-left:200px">名:</label>
-		    <input type="text" class="form-control" name="firstName" id="firstName">
+		    <input style="margin-left:100px;" type="text" class="form-control" name="firstName" id="firstName" value="${model.firstName}">
 		    <br><br>
 		    <div class="form-group">
 			  <label for="author">役職:</label>
-			  <select class="form-control" name ="authorityId" id ="authorityId">
+			  <select style="margin-left:87px;width: 178px;" class="form-control" name ="authorityId" id ="authorityId">
 			  	<option value=""></option>
 			  	<c:forEach var="item" items="${roles}">
-                  <option value="${item.authorityId}" >${item.authorityName}</option>
+                  <option value="${item.authorityId}" <c:if test="${item.authorityId == model.authorityId}">selected="selected"</c:if>>
+                  ${item.authorityName}
+                  </option>
               
                 </c:forEach>
 			  </select>
 			</div>
 
 			<input type="hidden" value="search" name="action"/>
-			<button type="button" class="btn btn-primary" onclick="GetSelectedValue()" style="margin-left:200px;width: 135px">リスト</button>
-		    <button type="submit" class="btn btn-primary" style="width: 135px">検索</button>
+			<button id="report" type="button" class="btn btn-primary" style="margin-left:300px;width: 200px;border-radius: 12px;">リスト</button>
+		    <button id="search" type="button" class="btn btn-primary" style="width: 200px;border-radius: 12px;">検索</button>
 		    
   		</form>
 		</div>
@@ -67,7 +69,7 @@
 														<th>年齢</th>
 														<th>役職</th>
 										
-														<th style="width: 300px"><button type="button" class="btn btn-primary btn-block" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=add'">登録</button></th>
+														<th style="width: 295px;"><button style="border-radius: 12px;" type="button" class="btn btn-primary btn-block" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=add'">登録</button></th>
 														
 													</tr>
 												</thead>
@@ -84,7 +86,7 @@
 																<c:if test="${item.age!=0}">${item.age}</c:if>
 															</td>
 															<td>
-																<c:if test="${item.admin==1}">*</c:if>
+																<c:if test="${item.admin==1}"><span class="fa fa-star"></span></c:if>
 																${item.mstRoleModel.authorityName}</td>
 															<td>
 																<c:url var="editURL" value="/admin-user">
@@ -95,12 +97,12 @@
 																	<c:param name="type" value="delete"/>
 																	<c:param name="userId" value="${item.userId}"/>
 																</c:url>
-																<button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='${editURL}'" style="width: 135px">更新</button>
-																<button type="button" class="btn btn-primary btn-sm" onClick="if(confirm('以下のデータを削除してよろしいですか。\nユーザID: ${item.userId}\n氏名:      ${item.firstName} ${item.familyName}')) window.location.href='${deleteURL}';" style="width: 135px" >削除</button>
+																<button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='${editURL}'" style="width: 135px;border-radius: 12px;">更新</button>
+																<button type="button" class="btn btn-primary btn-sm" onClick="if(confirm('以下のデータを削除してよろしいですか。\nユーザID: ${item.userId}\n氏名:      ${item.firstName} ${item.familyName}')) window.location.href='${deleteURL}';" style="width: 135px;border-radius: 12px;" >削除</button>
 																					
 															</td>
 														</tr>
-													<c:set var="i" value="${i+1}" />
+														<c:set var="i" value="${i+1}" />
 													</c:forEach>
 												</tbody>
 											</table>
@@ -116,13 +118,17 @@
 		</div>
 		<!-- /.main-content -->
 		<script>
-
-		function GetSelectedValue(){
-			var e = document.getElementById("authorityId");
-			var authorityId = e.options[e.selectedIndex].value;
-			
-			window.location.href = "/training/admin-download?familyName=&firstName=&authorityId="+authorityId;
-		}
+		
+		$('#report').click(function(){
+			   $('#formsearchSubmit').attr('action', '/training/admin-download');
+			   document.getElementById('formsearchSubmit').submit();
+			});
+		
+		$('#search').click(function(){
+			   $('#formsearchSubmit').attr('action', '/training/admin-user');
+			   document.getElementById('formsearchSubmit').submit();
+			});
+		
 
 		</script>
 	</body>

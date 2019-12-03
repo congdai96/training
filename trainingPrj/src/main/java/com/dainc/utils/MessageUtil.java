@@ -3,31 +3,31 @@ package com.dainc.utils;
 import javax.servlet.http.HttpServletRequest;
 
 public class MessageUtil {
-	
+
 	public static void showMessage(HttpServletRequest request) {
 		if (request.getParameter("message") != null) {
 			String messageResponse = "";
 			String alert = "";
 			String message = request.getParameter("message");
 			if (message.equals("userid_haved")) {
-				messageResponse = "ƒ†[ƒU[ID‚ª‚ ‚è‚Ü‚µ‚½B";
+				messageResponse = "ãƒ¦ãƒ¼ã‚¶IDãŒé‡è¤‡ã—ã¦ã„ã¾ã™ã€‚";
 				alert = "danger";
 			} else if (message.equals("false")) {
-				messageResponse = "¸”s‚µ‚Ü‚µ‚½B";
+				messageResponse = "ã§ãã¾ã›ã‚“ã€‚";
 				alert = "danger";
 			} else if (message.equals("not_haved")) {
-				messageResponse = "Œ‹‰Ê‚ª‚ ‚è‚Ü‚¹‚ñB";
+				messageResponse = "çµæœãŒã‚ã‚Šã¾ã›ã‚“ã€‚";
 				alert = "danger";
 			} else if (message.equals("add_success")) {
-				messageResponse = "“o˜^‚Å‚«‚Ü‚µ‚½B";
+				messageResponse = "ç™»éŒ²ã§ãã¾ã—ãŸã€‚";
 				alert = "success";
 			} else if (message.equals("edit_success")) {
-				messageResponse = "XV‚Å‚«‚Ü‚µ‚½B";
+				messageResponse = "æ›´æ–°ã§ãã¾ã—ãŸã€‚";
 				alert = "success";
 			} else if (message.equals("delete_success")) {
-				messageResponse = "íœ‚Å‚«‚Ü‚µ‚½B";
+				messageResponse = "å‰Šé™¤ã§ãã¾ã—ãŸã€‚";
 				alert = "success";
-			} 
+			}
 			request.setAttribute("message", messageResponse);
 			request.setAttribute("alert", alert);
 		}

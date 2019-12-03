@@ -1,7 +1,6 @@
 package com.dainc.controller.admin;
 
 import java.io.IOException;
-
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,94 +18,101 @@ import com.dainc.service.IMstGenderService;
 import com.dainc.service.IMstRoleService;
 import com.dainc.service.IMstUserService;
 import com.dainc.utils.FormUtil;
-import com.dainc.utils.SessionUtil;
 import com.dainc.utils.MessageUtil;
+import com.dainc.utils.SessionUtil;
 
 @WebServlet(urlPatterns = {"/admin-user"})
 public class UserController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 2686801510274002166L;
-	
+
 	@Inject
 	private IMstUserService mstUserService;
-	
+
 	@Inject
 	private IMstRoleService mstRoleService;
-	
+
 	@Inject
 	private IMstGenderService mstGenderService;
-	
+
 	ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
-		
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);		//request‚Ìparam‚ğæ‚é
+		request.setCharacterEncoding("UTF-8");
+		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);		//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®æƒ…å ±ã‚’å–ã‚‹
 		String view = "";
-		if (mstModel.getType().equals(SystemConstant.LIST)) {			
-			mstModel.setListResult(mstUserService.findAll());			//‚·‚×‚Ä‚Ìƒf[ƒ^‚ğæ‚é
-			request.setAttribute("roles", mstRoleService.findAll());
+		if (mstModel.getType().equals(SystemConstant.LIST)) {			//ä¸€è¦§ç”»é¢ã®ã™ã¹ã¦ãƒ‡ãƒ¼ã‚¿
+			mstModel.setListResult(mstUserService.findAll());			//ã™ã¹ã¦ãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚‹
+			request.setAttribute("roles", mstRoleService.findAll());	//ã™ã¹ã¦å½¹è·ã‚’å–ã‚‹
 			view = "/views/admin/user/list.jsp";
-			
-		} 
-		
-		else if (mstModel.getType().equals(SystemConstant.EDIT)) {		//ˆê——‰æ–Ê‚ÅXVƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
-			mstModel = mstUserService.findOne(mstModel.getUserId());
-			request.setAttribute("roles", mstRoleService.findAll());
-			request.setAttribute("genders", mstGenderService.findAll());
-			view = "/views/admin/user/edit.jsp";
-			
+
 		}
-		
-		else if (mstModel.getType().equals(SystemConstant.ADD)) {		//ˆê——‰æ–Ê‚Å“o˜^ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
+
+		else if (mstModel.getType().equals(SystemConstant.EDIT)) {		//ä¸€è¦§ç”»é¢ã§æ›´æ–°ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
+			mstModel = mstUserService.findOne(mstModel.getUserId());	//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®æ›´æ–°ã—ãŸã„ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æƒ…å ±ã‚’å–ã‚‹
+			request.setAttribute("roles", mstRoleService.findAll());
+			request.setAttribute("genders", mstGenderService.findAll());//ã™ã¹ã¦æ€§åˆ¥ã‚’å–ã‚‹
+			view = "/views/admin/user/edit.jsp";
+
+		}
+
+		else if (mstModel.getType().equals(SystemConstant.ADD)) {		//ä¸€è¦§ç”»é¢ã§ç™»éŒ²ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
 			request.setAttribute("roles", mstRoleService.findAll());
 			request.setAttribute("genders", mstGenderService.findAll());
 			view = "/views/admin/user/add.jsp";
 		}
-		
-		else if (mstModel.getType().equals(SystemConstant.DELETE)) {	//ˆê——‰æ–Ê‚Åíœƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
-			mstUserService.delete(mstModel.getUserId());
+
+		else if (mstModel.getType().equals(SystemConstant.DELETE)) {	//ä¸€è¦§ç”»é¢ã§å‰Šé™¤ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
+			mstUserService.delete(mstModel.getUserId());				//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’æ¶ˆã™
 			response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=delete_success&alert=success");
 			return;
 		}
-		MessageUtil.showMessage(request);								//ƒAƒiƒEƒ“ƒX‚Ì‚Æ‚±‚ë
+		MessageUtil.showMessage(request);								//ã‚¢ãƒŠã‚¦ãƒ³ã‚¹
 		request.setAttribute(SystemConstant.MODEL, mstModel);
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
+		MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);		//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®æƒ…å ±ã‚’å–ã‚‹
+		String view = "";
 		String action = request.getParameter("action");
-		if (action != null && action.equals("edit")) {			//XV‰æ–Ê‚ÅXVƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
-			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
-			if (mstUserService.update(mstModel)) {
-				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=edit_success&alert=success");
+		if (action != null && action.equals("edit")) {			//æ›´æ–°ç”»é¢ã§æ›´æ–°ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
+			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());	//æ›´æ–°è€…ã‚’è¿½åŠ ã™ã‚‹
+			if (mstUserService.update(mstModel)) {	//æ›´æ–°ã—ã¦ã¿ã‚‹
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=edit_success&alert=success");	//æ›´æ–°ã§ããŸ
 			}
-			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");
+			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");	//æ›´æ–°ã§ããªã„
+			return;
 		}
-		
-		else if (action != null && action.equals("add")) {		//“o˜^‰æ–Ê‚Å“o˜^ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
-			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());
-			if(mstUserService.save(mstModel)) {
-				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=add_success&alert=success");
+
+		else if (action != null && action.equals("add")) {		//ç™»éŒ²ç”»é¢ã§ç™»éŒ²ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
+			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());	//ç™»éŒ²è€…ã‚’è¿½åŠ ã™ã‚‹
+			if(mstUserService.save(mstModel)) {		//ç™»éŒ²ã—ã¦ã¿ã‚‹
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=add_success&alert=success");	//ç™»éŒ²ã§ããŸ
+				return;
 			}
-			else response.sendRedirect(request.getContextPath()+"/admin-user?type=add&message=userid_haved&alert=danger");
-		}
-		
-		else if (action != null && action.equals("search")) {	//ˆê——‰æ–Ê‚ÅŒŸõƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ ‚Æ
-			List<MstUserModel> result = mstUserService.search(mstModel);	//ƒf[ƒ^‚ğæ‚é
-			if (result !=null) {
-				mstModel.setListResult(result);
-				String view = "";
-				view = "/views/admin/user/list.jsp";
-				request.setAttribute(SystemConstant.MODEL, mstModel);
-				request.setAttribute("roles", mstRoleService.findAll());
-				RequestDispatcher rd = request.getRequestDispatcher(view);
-				rd.forward(request, response);
+			else {	//ç™»éŒ²ã§ããªã„ã€ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã«å…¥åŠ›ã—ãŸæƒ…å ±ã‚’å¸°ã™
+				request.setAttribute("genders", mstGenderService.findAll());
+				request.setAttribute("message", resourceBundle.getString("userid_haved"));
+				request.setAttribute("alert", "danger");
+				view = "/views/admin/user/add.jsp";
 			}
-			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=not_haved&alert=danger");
 		}
-		
+
+		else if (action != null && action.equals("search")) {		//ä¸€è¦§ç”»é¢ã§æ¤œç´¢ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨
+			List<MstUserModel> result = mstUserService.search(mstModel);	//å–ã£ãŸæƒ…å ±ã«å¿œã˜ã¦æ¤œç´¢ã™ã‚‹
+			mstModel.setListResult(result);
+			view = "/views/admin/user/list.jsp";
+			if (result == null) {	//çµæœãŒãªã„ã¨ãã€ã‚¢ãƒŠã‚¦ãƒ³ã‚¹ã¨å¸°ã™
+				request.setAttribute("message", resourceBundle.getString("not_haved"));
+				request.setAttribute("alert", "danger");
+			}
+		}
+		request.setAttribute(SystemConstant.MODEL, mstModel);
+		request.setAttribute("roles", mstRoleService.findAll());
+		RequestDispatcher rd = request.getRequestDispatcher(view);
+		rd.forward(request, response);
 	}
 }

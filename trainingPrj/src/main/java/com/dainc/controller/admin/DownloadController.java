@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dainc.model.MstUserModel;
+import com.dainc.service.IMstRoleService;
 import com.dainc.service.IMstUserService;
 import com.dainc.utils.FormUtil;
 import com.dainc.utils.ReportUtil;
@@ -32,14 +33,17 @@ public class DownloadController extends HttpServlet {
   @Inject
   private IMstUserService mstUserService;
   
+  @Inject
+  private IMstRoleService mstRoleService;
+  
   ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");
 
 
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	MstUserModel mstModel = FormUtil.toModel(MstUserModel.class, request);
 	List<MstUserModel> result = mstUserService.search(mstModel);
 	if(result!=null) {
-		ReportUtil.exec(mstUserService.search(mstModel));	//帳票を作る
+		ReportUtil.exec(mstUserService.search(mstModel),mstRoleService.findAll());	//帳票を作る
 	    String fullPath = resourceBundle.getString("file_pdf");  // ファイルのリンク
 	    Path path = Paths.get(fullPath);
 	    byte[] data = Files.readAllBytes(path);
@@ -59,7 +63,5 @@ public class DownloadController extends HttpServlet {
 	else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=not_haved&alert=danger");	//ダウンロードできない
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    doGet(request, response);
-  }
+
 }

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -76,10 +77,15 @@ public class AbstractDAO<T> implements GenericDAO<T> {
 				} else if (parameter instanceof String) {
 					statement.setString(index, (String) parameter);
 				} else if (parameter instanceof Integer) {
-					statement.setInt(index, (Integer) parameter);
+					Integer value = (Integer) parameter;
+					if(value == -1) {
+						statement.setObject(index, null);
+					} else {
+						statement.setInt(index, (Integer) parameter);
+					}
 				} else if (parameter instanceof Timestamp) {
 					statement.setTimestamp(index, (Timestamp) parameter);
-				}
+				} 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
