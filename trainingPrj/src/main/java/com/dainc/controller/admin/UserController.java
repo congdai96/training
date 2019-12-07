@@ -63,9 +63,8 @@ public class UserController extends HttpServlet {
 		}
 
 		else if (mstModel.getType().equals(SystemConstant.DELETE)) {	//一覧画面で削除ボタンを押すと
-			mstUserService.delete(mstModel.getUserId());				//ユーザーを消す
-			response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=delete_success&alert=success");
-			return;
+			mstModel = mstUserService.findOne(mstModel.getUserId());
+			view = "/views/admin/user/delete.jsp";
 		}
 		MessageUtil.showMessage(request);								//アナウンス
 		request.setAttribute(SystemConstant.MODEL, mstModel);
@@ -86,7 +85,13 @@ public class UserController extends HttpServlet {
 			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");	//更新できない
 			return;
 		}
-
+		
+		else if (action != null && action.equals("delete")) {	//削除画面で削除ボタンを押すと
+			mstUserService.delete(mstModel.getUserId());			
+			response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=delete_success&alert=success");
+			return;
+		}
+		
 		else if (action != null && action.equals("add")) {		//登録画面で登録ボタンを押すと
 			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());	//登録者を追加する
 			if(mstUserService.save(mstModel)) {		//登録してみる
@@ -100,7 +105,7 @@ public class UserController extends HttpServlet {
 				view = "/views/admin/user/add.jsp";
 			}
 		}
-
+				
 		else if (action != null && action.equals("search")) {		//一覧画面で検索ボタンを押すと
 			List<MstUserModel> result = mstUserService.search(mstModel);	//取った情報に応じて検索する
 			mstModel.setListResult(result);

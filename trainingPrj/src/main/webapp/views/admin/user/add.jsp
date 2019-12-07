@@ -15,7 +15,7 @@
 									${message}
 							</div>
 						</c:if>
-						<h1>登録</h1>
+						<font size="8">登録</font>
                         <form id="formSubmit" name="formSubmit" class="form-inline" form action="<c:url value='/admin-user'/>" method="post" onsubmit="return validateForm()">
                            	<br/>
                            	<br/>

@@ -25,9 +25,9 @@
 									</div>
 								</c:if>
 								<div class="row">
-								<label  class="col-md-10 col-form-label text-md-right"><h1 >役職別集計</h1></label>
-								<div class="col-md-1">
-								<button style="margin-top: 17px;border-radius: 12px;" type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=list'">一覧</button>
+								<label  class="col-md-11 col-form-label text-md-right"><font size="8">役職別集計</font></label>
+								<div class="col-md-1" style="margin-top: 30px;">
+								<a  href="${pageContext.request.contextPath}/admin-user?type=list"><u>一覧</u></a>
 								</div>
 								</div>
 								

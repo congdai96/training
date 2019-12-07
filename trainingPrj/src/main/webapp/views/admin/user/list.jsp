@@ -19,7 +19,7 @@
 									${message}
 							</div>
 						</c:if>
-						<h1 style="margin-left:20px;">一覧</h1>
+						<font size="8">一覧</font>
 		<form id="formsearchSubmit" class="form-inline" style="margin-left:50px" method = "post">
 			<br>
 		    <label >姓:</label>
@@ -98,7 +98,7 @@
 																	<c:param name="userId" value="${item.userId}"/>
 																</c:url>
 																<button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='${editURL}'" style="width: 135px;border-radius: 12px;">更新</button>
-																<button type="button" class="btn btn-primary btn-sm" onClick="if(confirm('以下のデータを削除してよろしいですか。\nユーザID: ${item.userId}\n氏名:      ${item.firstName} ${item.familyName}')) window.location.href='${deleteURL}';" style="width: 135px;border-radius: 12px;" >削除</button>
+																<button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='${deleteURL}'" style="width: 135px;border-radius: 12px;" >削除</button>
 																					
 															</td>
 														</tr>

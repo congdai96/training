@@ -28,7 +28,8 @@ public class ReportUtil {
 
 
     static ResourceBundle resourceBundle = ResourceBundle.getBundle("ReportFileLink");	//XMLファイルのリンク
-
+	
+	private static int pageNo, pageTotal;
 
     public static void exec(List<MstUserModel> dataList,List<MstRoleModel> roleList) {
 		OpenFunXion ofx = new OpenFunXion(resourceBundle.getString("file_xml"));
@@ -41,34 +42,43 @@ public class ReportUtil {
 			e.printStackTrace();
 			return;
 		}
+		
 
-		List<MstUserModel> noRoleList = new ArrayList<MstUserModel>();
+		ArrayList<ArrayList<MstUserModel>> reportList = new  ArrayList<ArrayList<MstUserModel>>();
+		List<MstUserModel> noRoleSonList = new ArrayList<MstUserModel>();
 		for (Iterator i = roleList.iterator(); i.hasNext();) {	//帳票したいデータを役職によって分割する
-			noRoleList.clear();
+			noRoleSonList.clear();
 			MstRoleModel roleModel = (MstRoleModel) i.next();
-			List<MstUserModel> reportList = new ArrayList<MstUserModel>();
+			List<MstUserModel> sonList = new ArrayList<MstUserModel>();
 			for (Iterator j = dataList.iterator(); j.hasNext();) {
 				MstUserModel dataModel = (MstUserModel) j.next();
 				if (roleModel.getAuthorityId() == dataModel.getAuthorityId()) {
-					reportList.add(dataModel);
+					sonList.add(dataModel);
 				} else if (dataModel.getAuthorityId()==0) {
-					noRoleList.add(dataModel);
+					noRoleSonList.add(dataModel);
 				}
 			}
-			if(reportList.size()!=0) {
-				makePdf(ofx, reportList);
+			if(sonList.size()!=0) {
+				pageTotal = pageTotal + (sonList.size()+15)/16;
+				reportList.add((ArrayList<MstUserModel>) sonList);
 			}
 		}
-		if(noRoleList.size()!=0) {
-			makePdf(ofx, noRoleList);
+		if(noRoleSonList.size()!=0) {
+			pageTotal = pageTotal + (noRoleSonList.size()+15)/16;
+			reportList.add((ArrayList<MstUserModel>) noRoleSonList);
+		}
+		for (Iterator i = reportList.iterator(); i.hasNext();) {
+			List<MstUserModel> sonList = (List<MstUserModel>) i.next();
+			makePdf(ofx, sonList);
 		}
 		ofx.out();
+		pageNo = 0;
+		pageTotal = 0;
 	}
 
     public static  void makePdf( OpenFunXion ofx, List<MstUserModel> dataList) {
     	ofx.newPage();
     	MstUserModel userModel = dataList.get(0);
-        int pageTotal = (dataList.size()+15)/16;
         if(userModel.getAuthorityId()==0) {
         	printOutline( ofx,"まだ登録していない");
         } else {
@@ -78,7 +88,7 @@ public class ReportUtil {
 
         int moveY = 40;
 
-        int pageNo = 1;
+        pageNo++;
         Text page = ofx.getText( "text_13" );
         page.setMessage( "PAGE: " + pageNo +"/"+ pageTotal );
         page.print();
