@@ -45,16 +45,21 @@ public class MstUserService implements IMstUserService {
 	@Override
 	public MstUserModel findOne(String userId) {
 		MstUserModel mstUserModel = mstUserDAO.findOne(userId);
-		MstRoleModel mstRoleModel = mstRoleDAO.findOne(mstUserModel.getAuthorityId());
-		MstGenderModel mstGenderModel = mstGenderDAO.findOne(mstUserModel.getGenderId());
-		mstUserModel.setMstRoleModel(mstRoleModel);
-		mstUserModel.setMstGenderModel(mstGenderModel);
+		try {
+			MstRoleModel mstRoleModel = mstRoleDAO.findOne(mstUserModel.getAuthorityId());
+			MstGenderModel mstGenderModel = mstGenderDAO.findOne(mstUserModel.getGenderId());
+			mstUserModel.setMstRoleModel(mstRoleModel);
+			mstUserModel.setMstGenderModel(mstGenderModel);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
         return mstUserModel;
 	}
 
 	@Override
 	public boolean update(MstUserModel mstUserModel) {
-		if(checkValidate(mstUserModel)) {
+		MstUserModel updateModel = mstUserDAO.findOne(mstUserModel.getUserId());
+		if(updateModel != null && checkValidate(mstUserModel)) {
 		MstUserModel oldUserModel = mstUserDAO.findOne(mstUserModel.getUserId());
 		mstUserModel.setCreatedDate(oldUserModel.getCreatedDate());
 		mstUserModel.setCreatedBy(oldUserModel.getCreatedBy());
@@ -66,8 +71,12 @@ public class MstUserService implements IMstUserService {
 	}
 
 	@Override
-	public void delete(String userId) {
-		mstUserDAO.delete(userId);		
+	public boolean delete(String userId) {
+		MstUserModel deleteModel = mstUserDAO.findOne(userId);
+		if(deleteModel == null) 
+			return false;
+		mstUserDAO.delete(userId);
+		return true;
 	}
 
 	@Override

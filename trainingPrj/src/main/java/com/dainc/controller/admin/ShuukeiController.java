@@ -2,6 +2,7 @@ package com.dainc.controller.admin;
 
 import java.io.IOException;
 
+
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dainc.model.ShuukeiModel;
 import com.dainc.service.IShuukeiService;
+import com.dainc.utils.MessageUtil;
 
 @WebServlet(urlPatterns = {"/admin-shuukei"})
 public class ShuukeiController extends HttpServlet {
@@ -27,6 +29,7 @@ public class ShuukeiController extends HttpServlet {
 		shuukeiModel.setListResult(shuukeiService.roleShuukei());	//集計データを取る
 		request.setAttribute("shuukeiModel", shuukeiModel);
 		String view = "/views/admin/shuukei.jsp";
+		MessageUtil.showMessage(request);
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
 

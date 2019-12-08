@@ -27,6 +27,12 @@ public class MessageUtil {
 			} else if (message.equals("delete_success")) {
 				messageResponse = "削除できました。";
 				alert = "success";
+			} else if (message.equals("non_user")) {
+				messageResponse = "ユーザーがありません。他の管理者は削除したかもしれません。";
+				alert = "danger";
+			} else if (message.equals("new_data")) {
+				messageResponse = "最新データが更新されました。";
+				alert = "success";
 			}
 			request.setAttribute("message", messageResponse);
 			request.setAttribute("alert", alert);

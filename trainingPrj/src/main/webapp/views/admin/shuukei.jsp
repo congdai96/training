@@ -19,9 +19,9 @@
 					<div class="page-content">
 						<div class="row">
 							<div class="col-xs-12">
-								<c:if test="${not empty messageResponse}">
+								<c:if test="${not empty message}">
 									<div class="alert alert-${alert}">
-  										${messageResponse}
+  										${message}
 									</div>
 								</c:if>
 								<div class="row">
@@ -30,9 +30,9 @@
 								<a  href="${pageContext.request.contextPath}/admin-user?type=list"><u>一覧</u></a>
 								</div>
 								</div>
-								
+								<button style="margin-left: 1170px; margin-top: 50px; width:150px;border-radius: 12px;" type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-shuukei?message=new_data'">集計</button>								
 								<div>
-								<br><br><br>
+								<br>
 								<div class="row">
 									<div class="col-xs-12">
 										<div class="table-responsive">

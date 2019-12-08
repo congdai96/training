@@ -50,6 +50,10 @@ public class UserController extends HttpServlet {
 
 		else if (mstModel.getType().equals(SystemConstant.EDIT)) {		//一覧画面で更新ボタンを押すと
 			mstModel = mstUserService.findOne(mstModel.getUserId());	//クライアントの更新したいユーザーの情報を取る
+			if(mstModel==null) {
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=non_user");
+				return;
+			}
 			request.setAttribute("roles", mstRoleService.findAll());
 			request.setAttribute("genders", mstGenderService.findAll());//すべて性別を取る
 			view = "/views/admin/user/edit.jsp";
@@ -64,6 +68,10 @@ public class UserController extends HttpServlet {
 
 		else if (mstModel.getType().equals(SystemConstant.DELETE)) {	//一覧画面で削除ボタンを押すと
 			mstModel = mstUserService.findOne(mstModel.getUserId());
+			if(mstModel==null) {
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=non_user");
+				return;
+			}
 			view = "/views/admin/user/delete.jsp";
 		}
 		MessageUtil.showMessage(request);								//アナウンス
@@ -80,22 +88,24 @@ public class UserController extends HttpServlet {
 		if (action != null && action.equals("edit")) {			//更新画面で更新ボタンを押すと
 			mstModel.setModifiedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());	//更新者を追加する
 			if (mstUserService.update(mstModel)) {	//更新してみる
-				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=edit_success&alert=success");	//更新できた
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=edit_success");	//更新できた
 			}
-			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=false&alert=danger");	//更新できない
+			else response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=non_user");	//更新できない
 			return;
 		}
 		
 		else if (action != null && action.equals("delete")) {	//削除画面で削除ボタンを押すと
-			mstUserService.delete(mstModel.getUserId());			
-			response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=delete_success&alert=success");
+			if(mstUserService.delete(mstModel.getUserId()))
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=delete_success");
+			else
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=non_user");
 			return;
 		}
 		
 		else if (action != null && action.equals("add")) {		//登録画面で登録ボタンを押すと
 			mstModel.setCreatedBy(((MstUserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserId());	//登録者を追加する
 			if(mstUserService.save(mstModel)) {		//登録してみる
-				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=add_success&alert=success");	//登録できた
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=add_success");	//登録できた
 				return;
 			}
 			else {	//登録できない、クライアントに入力した情報を帰す

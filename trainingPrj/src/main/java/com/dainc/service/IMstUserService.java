@@ -10,7 +10,7 @@ public interface IMstUserService {
 	MstUserModel findOne(String userId);
 	int getTotalItem();
 	boolean update(MstUserModel mstUserModel);
-	void delete(String userId);
+	boolean delete(String userId);
 	boolean save(MstUserModel mstUserModel);
 	List<MstUserModel> search(MstUserModel mstUserModel);
 	boolean checkValidate(MstUserModel mstUserModel);

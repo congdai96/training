@@ -62,7 +62,7 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 	@Override
 	public void delete(String userId) {
 		String sql = "DELETE FROM mst_user WHERE user_id = ?";
-		update(sql, userId);	
+		update(sql, userId);
 	}
 
 	@Override
