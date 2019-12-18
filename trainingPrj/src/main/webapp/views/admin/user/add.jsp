@@ -23,8 +23,8 @@
                             <br/>
                             <div class="row">
                                 <label class="col-md-1 col-md-offset-1">ユーザID：</label>
-                                <input class="col-md-2"  type="text" class="form-control" name="userId" id="userId" value="${model.userId}" required>
-                                <label class="col-md-1 col-md-offset-1" >パスワード：</label>
+                                <input style="color: red" class="col-md-2"  type="text" class="form-control" name="userId" id="userId" value="${model.userId}" required>
+                                <label class="col-md-1 col-md-offset-1" >パスワード</label>
                                 <input class="col-md-2"  type="text" class="form-control" id="password" name="password" value="${model.password}" required/>												
                             </div>
                             <br/>

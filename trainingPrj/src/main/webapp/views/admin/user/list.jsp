@@ -22,14 +22,16 @@
 						<font size="8">一覧</font>
 		<form id="formsearchSubmit" class="form-inline" style="margin-left:50px" method = "post">
 			<br>
-		    <label >姓:</label>
-		    <input style="margin-left:100px;" type="text" class="form-control" name="familyName" id="familyName" value="${model.familyName}">
-		    <label style="margin-left:200px">名:</label>
-		    <input style="margin-left:100px;" type="text" class="form-control" name="firstName" id="firstName" value="${model.firstName}">
+			<div class="row">
+		    <label class="col-sm-1">姓:</label>
+		    <input type="text" class="col-sm-2" name="familyName" id="familyName" value="${model.familyName}">
+		    <label class="col-sm-1 col-sm-offset-2" >名:</label>
+		    <input  type="text" class="col-sm-2" name="firstName" id="firstName" value="${model.firstName}">
+		    </div>
 		    <br><br>
-		    <div class="form-group">
-			  <label for="author">役職:</label>
-			  <select style="margin-left:87px;width: 178px;" class="form-control" name ="authorityId" id ="authorityId">
+		    <div class="row">
+			  <label class="col-sm-1">役職:</label>
+			  <select class="col-sm-2" name ="authorityId" id ="authorityId">
 			  	<option value=""></option>
 			  	<c:forEach var="item" items="${roles}">
                   <option value="${item.authorityId}" <c:if test="${item.authorityId == model.authorityId}">selected="selected"</c:if>>
@@ -38,12 +40,10 @@
               
                 </c:forEach>
 			  </select>
-			</div>
-
 			<input type="hidden" value="search" name="action"/>
 			<button id="report" type="button" class="btn btn-primary" style="margin-left:300px;width: 200px;border-radius: 12px;">リスト</button>
 		    <button id="search" type="button" class="btn btn-primary" style="width: 200px;border-radius: 12px;">検索</button>
-		    
+		    </div>
   		</form>
 		</div>
 		<div class="main-content">
@@ -62,14 +62,14 @@
 											<table class="table table-bordered">
 												<thead>
 													<tr>
-														<th>No</th>
-														<th>ユーザーID</th>
-														<th>氏名</th>
-														<th>性別</th>
-														<th>年齢</th>
-														<th>役職</th>
+														<th class="col-xs-1">No</th>
+														<th class="col-xs-2">ユーザーID</th>
+														<th class="col-xs-2">氏名</th>
+														<th class="col-xs-1">性別</th>
+														<th class="col-xs-1">年齢</th>
+														<th class="col-xs-2">役職</th>
 										
-														<th style="width: 295px;"><button style="border-radius: 12px;" type="button" class="btn btn-primary btn-block" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=add'">登録</button></th>
+														<th class="col-xs-3"><button style="border-radius: 12px;" type="button" class="btn btn-primary btn-block" onclick="window.location.href='${pageContext.request.contextPath}/admin-user?type=add'">登録</button></th>
 														
 													</tr>
 												</thead>
@@ -79,7 +79,7 @@
 														<tr>
 															<td>${i}</td>
 															<td>${item.userId}</td>
-															<td>${item.firstName} ${item.familyName}</td>
+															<td>${item.familyName} ${item.firstName}</td>
 															<td>${item.mstGenderModel.genderName}</td>
 															<td>
 																<c:if test="${item.age==0}"></c:if>

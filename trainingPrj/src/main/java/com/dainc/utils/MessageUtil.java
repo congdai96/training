@@ -33,6 +33,9 @@ public class MessageUtil {
 			} else if (message.equals("new_data")) {
 				messageResponse = "最新データが更新されました。";
 				alert = "success";
+			} else if (message.equals("login_success")) {
+				messageResponse = "ログインできました。";
+				alert = "success";
 			}
 			request.setAttribute("message", messageResponse);
 			request.setAttribute("alert", alert);

@@ -30,8 +30,7 @@ public class ShuukeiDAO extends AbstractDAO<ShuukeiModel> implements IShuukeiDAO
 		sql.append(shuukeiSql("min20","age>19", "tbMin20"));
 		sql.append(shuukeiSql("notfull","authority_id IS NULL OR gender_id IS NULL OR age IS NULL", "tbNotFull"));
 		sql.append(shuukeiSql("notage","age IS NULL", "tbNotAge"));
-		return query(sql.toString(), new ShuukeiMapper());
-		
+		return query(sql.toString(), new ShuukeiMapper());		
 	}
 
 

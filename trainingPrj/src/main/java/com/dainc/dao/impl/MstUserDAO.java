@@ -107,6 +107,12 @@ public class MstUserDAO extends AbstractDAO<MstUserModel> implements IMstUserDAO
 
 	}
 
+	@Override
+	public List<MstUserModel> findRoleNull() {
+		String sql = "SELECT * FROM mst_user WHERE authority_id is null";
+		return query(sql.toString(), new MstUserMapper());
+	}
+
 
 }
 	

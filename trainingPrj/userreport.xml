@@ -68,9 +68,6 @@
 		</openfunxion_text>
 		<openfunxion_box parent="body_block" id="box_9" name="box_9" x1="540" y1="0" x2="595" y2="30" thickness="1.0" red="255" green="255" blue="255" color_transparent="255" fill_enable="true" fill_color_red="255" fill_color_green="255" fill_color_blue="255" fill_color_transparent="255" dash_enable="false" dash_unitson="0.0" dash_unitsoff="0.0" dash_phase="0.0" memo="" display="true" output="true">
 		</openfunxion_box>
-		<openfunxion_text parent="body_block" id="text_9" name="text_9" x1="546" y1="24" message="2019/7" horizontal_scale="1.0" font="HeiseiMin-W3" font_encoding="UniJIS-UCS2-HW-H" font_size="14" background_enable="false" background_red="0" background_green="0" background_blue="0" size_outline="false" red="0" green="0" blue="0" memo="" display="true" output="true"
-		 underline="false" underline_thick="0.0" underline_ypos="0.0" underline_red="0" underline_green="0" underline_blue="0" bold="false" italic="false" outline="false" strike="false" external_font_enable="false" external_font_file="" external_font_name="">
-		</openfunxion_text>
 		<openfunxion_box parent="body_block" id="box_10" name="box_10" x1="33" y1="39" x2="246" y2="73" thickness="1.0" red="255" green="255" blue="255" color_transparent="255" fill_enable="true" fill_color_red="255" fill_color_green="255" fill_color_blue="255" fill_color_transparent="255" dash_enable="false" dash_unitson="0.0" dash_unitsoff="0.0" dash_phase="0.0" memo="" display="true" output="true">
 		</openfunxion_box>
 		<openfunxion_box parent="body_block" id="box_11" name="box_11" x1="264" y1="39" x2="582" y2="108" thickness="1.0" red="255" green="255" blue="255" color_transparent="255" fill_enable="true" fill_color_red="255" fill_color_green="255" fill_color_blue="255" fill_color_transparent="255" dash_enable="false" dash_unitson="0.0" dash_unitsoff="0.0" dash_phase="0.0" memo="" display="true" output="true">
@@ -110,6 +107,9 @@
 		 underline="false" underline_thick="0.0" underline_ypos="0.0" underline_red="0" underline_green="0" underline_blue="0" bold="false" italic="false" outline="false" strike="false" external_font_enable="false" external_font_file="C:\WINNT\Fonts\CODE39.TTF" external_font_name=".Vn3DH">
 		</openfunxion_text>
 		<openfunxion_text parent="body_block" id="header_4" name="header_4" x1="456" y1="150" message="«•Ê" horizontal_scale="1.0" font="HeiseiMin-W3" font_encoding="UniJIS-UCS2-HW-H" font_size="15" background_enable="false" background_red="0" background_green="0" background_blue="0" size_outline="false" red="0" green="0" blue="0" memo="" display="true" output="true"
+		 underline="false" underline_thick="0.0" underline_ypos="0.0" underline_red="0" underline_green="0" underline_blue="0" bold="false" italic="false" outline="false" strike="false" external_font_enable="false" external_font_file="C:\WINNT\Fonts\CODE39.TTF" external_font_name=".Vn3DH">
+		</openfunxion_text>
+		<openfunxion_text parent="body_block" id="text_9" name="text_9" x1="546" y1="24" message="2019/11" horizontal_scale="1.0" font="HeiseiMin-W3" font_encoding="UniJIS-UCS2-HW-H" font_size="14" background_enable="false" background_red="0" background_green="0" background_blue="0" size_outline="false" red="0" green="0" blue="0" memo="" display="true" output="true"
 		 underline="false" underline_thick="0.0" underline_ypos="0.0" underline_red="0" underline_green="0" underline_blue="0" bold="false" italic="false" outline="false" strike="false" external_font_enable="false" external_font_file="C:\WINNT\Fonts\CODE39.TTF" external_font_name=".Vn3DH">
 		</openfunxion_text>
 	</openfunxion_blocklayout>

@@ -13,4 +13,5 @@ public interface IMstUserDAO extends GenericDAO<MstUserModel> {
 	void delete(String userId);
 	void save(MstUserModel saveUserModel);
 	List<MstUserModel> search(MstUserModel mstUserModel);
+	List<MstUserModel> findRoleNull();
 }

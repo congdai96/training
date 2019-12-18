@@ -24,7 +24,7 @@
                             <div class="row">
                                 <label class="col-md-1 col-md-offset-1">ユーザID：</label>
                                 <label class="col-md-2" style="color: red"><c:out value="${model.userId}"/></label>
-                                <label class="col-md-1 col-md-offset-1" >パスワード：</label>
+                                <label class="col-md-1 col-md-offset-1" >パスワード</label>
                                 <input class="col-md-2"  type="text" class="form-control" id="password" name="password" value="${model.password}" required/>                        
                             </div>
                             <br/>

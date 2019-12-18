@@ -126,7 +126,7 @@ public class ReportUtil {
             userId.print();
             userId.moveY( moveY );
 
-            name.setMessage( model.getFirstName()+" "+model.getFamilyName() );
+            name.setMessage( model.getFamilyName()+" "+model.getFirstName() );
             name.print();
             name.moveY( moveY );
 

@@ -30,7 +30,7 @@
 								<a  href="${pageContext.request.contextPath}/admin-user?type=list"><u>一覧</u></a>
 								</div>
 								</div>
-								<button style="margin-left: 1170px; margin-top: 50px; width:150px;border-radius: 12px;" type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-shuukei?message=new_data'">集計</button>								
+								<button style="margin-left: 1050px; margin-top: 50px; width:150px;border-radius: 12px;" type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/admin-shuukei?message=new_data'">集計</button>								
 								<div>
 								<br>
 								<div class="row">

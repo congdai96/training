@@ -53,7 +53,7 @@ public class LoginController extends HttpServlet {
 			mstModel = mstUserService.findByUserNameAndPassword(mstModel.getUserId(), mstModel.getPassword());	//情報を検査する
 			if (mstModel != null) {															//正しいとき
 				SessionUtil.getInstance().putValue(request, "USERMODEL", mstModel);			//Sessionにログインしているユーザーを入れる
-				response.sendRedirect(request.getContextPath()+"/admin-user?type=list");
+				response.sendRedirect(request.getContextPath()+"/admin-user?type=list&message=login_success");
 			}
 			else {																			//間違うとき
 				response.sendRedirect(request.getContextPath()+"/login?action=login&message=username_password_invalid&alert=danger");

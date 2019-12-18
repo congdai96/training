@@ -11,7 +11,7 @@ pageEncoding="UTF-8"%>
 
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<div class="container">
-			<a class="navbar-brand" href="#">ログイン</a>
+			<font size="8" class="p-4 mb-3 bg-white text-warning">ログイン</font>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
