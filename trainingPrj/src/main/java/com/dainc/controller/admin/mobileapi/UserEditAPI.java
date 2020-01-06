@@ -22,43 +22,15 @@ import com.dainc.utils.FormUtil;
 import com.dainc.utils.HttpUtil;
 import com.dainc.utils.SessionUtil;
 
-@WebServlet(urlPatterns = {"/api-user"})
-public class UserAPI extends HttpServlet {
+@WebServlet(urlPatterns = {"/api-user-edit"})
+public class UserEditAPI extends HttpServlet {
 	
 	@Inject
 	private IMstUserService mstUserService;
 
 	private static final long serialVersionUID = -915988021506484384L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		MstUserModel userModel =  FormUtil.toModel(MstUserModel.class, request);
-		mapper.writeValue(response.getOutputStream(), mstUserService.findOne(userModel.getUserId()));
-	}
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode rootNode = mapper.createObjectNode();
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		MstUserModel userModel =  FormUtil.toModel(MstUserModel.class, request);
-		userModel.setCreatedBy(((MstUserModel) request.getAttribute("loginUser")).getUserId());
-		if(mstUserService.save(userModel)) {		//登録してみる
-			((ObjectNode) rootNode).put("status", "add_success");
-			mapper.writeValue(response.getOutputStream(), rootNode);
-			return;
-		}
-		((ObjectNode) rootNode).put("status", "user_haved");
-		mapper.writeValue(response.getOutputStream(), rootNode);
-	}
-	
-	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.createObjectNode();
@@ -76,5 +48,4 @@ public class UserAPI extends HttpServlet {
 		mapper.writeValue(response.getOutputStream(), rootNode);
 	}
 	
-
 }
